@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "api/gemini.js": {
+      "memory": 256,
+      "maxDuration": 30
+    },
+    "api/ml-engine.js": {
+      "memory": 256,
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    { "src": "/api/gemini", "dest": "/api/gemini.js" },
+    { "src": "/api/ml", "dest": "/api/ml-engine.js" },
+    { "src": "/ml-dashboard", "dest": "/public/ml-dashboard.html" },
+    { "src": "/(.*)", "dest": "/public/$1" }
+  ]
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodFilm — AI Movie Recommendations Based on Your Mood</title>
+  <meta name="description" content="MoodFilm uses AI to recommend the perfect movie based on how you feel. Get instant personalized movie suggestions for any mood." />
+  <meta name="keywords" content="movie recommendations, mood based movies, AI movie finder, what to watch tonight" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="MoodFilm — AI Movie Recommendations" />
+  <meta property="og:description" content="Tell us your mood. Our AI finds your perfect film instantly." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon">🎬</span>
+        <span class="logo-text">MoodFilm</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link active">Home</a></li>
+        <li><a href="#trending" class="nav-link" onclick="scrollTo('trending')">Trending</a></li>
+        <li><a href="#" class="nav-link" onclick="scrollToFavorites()">Favorites</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="ml-dashboard.html" class="nav-link nav-link-ml">ML Lab 🧪</a></li>
+      </ul>
+      <div class="nav-right">
+        <button class="fav-btn" onclick="scrollToFavorites()">
+          ❤️ <span id="fav-count">0</span>
+        </button>
+        <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div id="hero-particles"></div>
+    <div class="hero-content">
+      <div class="hero-badge">✨ AI-Powered · Free · Unlimited</div>
+      <h1 class="hero-title">
+        Find Your Perfect<br />
+        <span class="hero-accent">Movie Tonight</span>
+      </h1>
+      <p class="hero-subtitle">
+        Pick your mood or describe what you want to watch.<br />
+        Our AI finds the perfect film — instantly, for free.
+      </p>
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input"
+            placeholder='Try "emotional sci-fi" or "movies like Interstellar"...'
+            autocomplete="off" />
+          <button class="search-btn" onclick="handleSearch()">Search</button>
+        </div>
+        <p class="search-hint">Press Enter or click Search · Powered by Gemini AI</p>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Choose your mood</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- MOOD SECTION -->
+  <section id="mood-section">
+    <div class="section-inner">
+      <h2 class="section-title">What's Your <span class="accent">Mood</span>?</h2>
+      <p class="section-subtitle">Pick a vibe and let our AI do the rest</p>
+      <div class="mood-grid" id="mood-grid"></div>
+    </div>
+  </section>
+
+  <!-- ML MOOD BADGE -->
+  <div id="ml-mood-badge" class="ml-mood-badge" style="display:none;" aria-live="polite"></div>
+
+  <!-- RESULTS SECTION -->
+  <section id="results-section" style="display:none;">
+    <div class="section-inner">
+      <div class="results-header">
+        <div>
+          <h2 class="section-title" id="results-title">Recommendations</h2>
+          <p class="section-subtitle" id="results-subtitle">Curated just for you</p>
+        </div>
+        <div class="results-actions">
+          <button class="btn-ghost" onclick="loadMoreMovies()">+ Load More</button>
+          <button class="btn-ghost" onclick="clearResults()">✕ Clear</button>
+        </div>
+      </div>
+      <div id="loading-state" style="display:none;">
+        <div class="skeleton-grid">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+      <div id="error-state" style="display:none;">
+        <div class="error-box">
+          <div class="error-icon">⚠️</div>
+          <h3>Something went wrong</h3>
+          <p id="error-message">Could not load recommendations. Please try again.</p>
+          <button class="btn-primary" onclick="retryLastAction()">Try Again</button>
+        </div>
+      </div>
+      <div class="movies-grid" id="movies-grid"></div>
+    </div>
+  </section>
+
+  <!-- TRENDING -->
+  <section id="trending" class="trending-section">
+    <div class="section-inner">
+      <h2 class="section-title">🔥 Trending <span class="accent">Now</span></h2>
+      <p class="section-subtitle">Popular movies this week</p>
+      <div id="trending-loading" class="loading-text">
+        <span class="spinner-sm"></span> Loading trending movies…
+      </div>
+      <div class="movies-grid" id="trending-grid"></div>
+    </div>
+  </section>
+
+  <!-- FAVORITES -->
+  <section id="favorites-section" style="display:none;">
+    <div class="section-inner">
+      <h2 class="section-title">❤️ My <span class="accent">Favorites</span></h2>
+      <p class="section-subtitle">Movies you saved</p>
+      <div class="movies-grid" id="favorites-grid"></div>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div id="modal-overlay" class="modal-overlay" onclick="closeModalOverlay(event)">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <!-- CONFETTI -->
+  <div id="confetti-container"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:12px;">
+          <span class="logo-icon">🎬</span>
+          <span class="logo-text">MoodFilm</span>
+        </div>
+        <p class="footer-tagline">AI-powered movie recommendations for every mood.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="/">Home</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Powered By</h4>
+          <a href="https://ai.google.dev" target="_blank">Gemini AI</a>
+          <a href="https://themoviedb.org" target="_blank">TMDb API</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 MoodFilm · All rights reserved · Built with ❤️ and AI</p>
+      <p>Movie data by <a href="https://www.themoviedb.org" target="_blank">TMDb</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
