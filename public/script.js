@@ -85,34 +85,15 @@ function hideMlBadge() {
 }
 
 function showMlProcessing(visible) {
-  const el = document.getElementById('ml-processing');
-  if (!el) return;
-  el.style.display = visible ? 'flex' : 'none';
-  const btn = document.querySelector('.ml-analyze-btn');
-  if (btn) { btn.disabled = visible; btn.style.opacity = visible ? '.6' : '1'; }
+  /* No-op: hero input removed; ML Lab section handles its own state */
 }
 
-function showMlResult(emoji, mood, pct, keywords) {
-  const panel = document.getElementById('ml-result-panel');
-  if (!panel) return;
-  const kw = keywords?.length
-    ? `<div class="ml-result-keywords">${keywords.slice(0,6).map(k => `<span class="kw-tag">${k}</span>`).join('')}</div>`
-    : '';
-  panel.innerHTML = `
-    <div class="ml-result-detected">
-      🧠 Detected Mood: <strong>${emoji} ${mood}</strong>
-      <span class="ml-result-conf">${pct}% confidence</span>
-    </div>
-    ${kw}
-    <div class="ml-result-finding">🎬 Finding movies that match your <strong>${mood}</strong> energy...</div>
-  `;
-  panel.style.display = 'block';
-  panel.classList.add('ml-result-animate');
+function showMlResult() {
+  /* No-op: hero result panel removed */
 }
 
 function hideMlResult() {
-  const panel = document.getElementById('ml-result-panel');
-  if (panel) panel.style.display = 'none';
+  /* No-op: hero result panel removed */
 }
 
 
@@ -293,7 +274,6 @@ function pickMood(moodId) {
 
   document.getElementById('results-title').textContent    = `${mood.emoji} ${mood.label} Movies`;
   document.getElementById('results-subtitle').textContent = mood.desc;
-  document.getElementById('search-input').value = '';
 
   state.lastAction = () => pickMood(moodId);
   showResults();
@@ -394,70 +374,16 @@ async function loadTrending() {
    SEARCH
 ══════════════════════════════════════════════════════════ */
 function setupSearch() {
-  const input = document.getElementById('search-input');
-  if (input) input.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); analyzeMoodAndSuggest(); }
-  });
+  /* Hero search input removed — ML Lab textarea handles input */
 }
 
-/* ── PRIMARY ML ENTRY POINT ── */
+/* Kept for backward-compat; routes to the ML Lab */
 async function analyzeMoodAndSuggest() {
-  const input = document.getElementById('search-input');
-  const text  = (input?.value ?? '').trim();
-  if (!text) { showToast('Describe how you\'re feeling first!', 'info'); return; }
-
-  hideMlBadge();
-  hideMlResult();
-  showMlProcessing(true);
-
-  let mlResult = null;
-  try {
-    mlResult = await mlApi('ml_sentiment', { text });
-  } catch (err) {
-    showMlProcessing(false);
-    showToast('ML analysis failed — try again!', 'error');
-    return;
-  }
-
-  showMlProcessing(false);
-
-  const { mood, confidence, keywords_found } = mlResult || {};
-  if (!mood) { showToast('Could not detect a mood — try describing differently.', 'info'); return; }
-
-  const moodData = MOODS.find(m => m.id === mood);
-  const emoji    = moodData?.emoji ?? '🧠';
-
-  /* Show detection result panel */
-  showMlResult(emoji, mood, confidence, keywords_found);
-  showMlBadge(mood, confidence);
-
-  /* Update state */
-  state.detectedMood = mood;
-  state.selectedMood = mood;
-  state.searchQuery  = '';
-  state.currentPage  = 1;
-  state.mode         = 'mood';
-
-  document.getElementById('results-title').textContent    = `${emoji} ${moodData?.label ?? mood} Movies`;
-  document.getElementById('results-subtitle').textContent = moodData?.desc ?? 'Personalized for your mood';
-
-  state.lastAction = () => analyzeMoodAndSuggest();
-  showResults();
-
-  setTimeout(() => {
-    document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 350);
-
-  fetchMoodMovies(moodData ?? { id: mood, genres: [18], sort: 'popularity.desc' }, 1, false);
+  scrollToSection('ml-lab');
 }
 
-/* Legacy text search — still used by any direct title searches */
 async function handleSearch() {
-  const input = document.getElementById('search-input');
-  const query = input?.value?.trim();
-  if (!query) { showToast('Type something first!', 'info'); return; }
-  /* Route through ML analysis by default */
-  analyzeMoodAndSuggest();
+  scrollToSection('ml-lab');
 }
 
 async function fetchSearchMovies(query, page, append) {
@@ -490,7 +416,6 @@ async function fetchSearchMovies(query, page, append) {
 
 function clearResults() {
   document.getElementById('results-section').style.display = 'none';
-  document.getElementById('search-input').value = '';
   state.searchQuery  = '';
   state.selectedMood = null;
   state.detectedMood = null;
