@@ -228,13 +228,18 @@ async function runMlLab() {
 }
 
 function resetMlLab() {
+  const mlLab = document.getElementById('ml-lab');
+  if (!mlLab) return;
+
   /* Show input panel */
-  const inputPanel = document.querySelector('.ml-lab-input-panel');
+  const inputPanel = mlLab.querySelector('.ml-lab-input-panel');
   if (inputPanel) inputPanel.style.display = 'block';
 
   /* Hide results panel */
-  const results = document.getElementById('ml-lab-results');
-  if (results) results.style.display = 'none';
+  ['ml-lab-results', 'ml-loading'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
 
   /* Hide search again button */
   const btn = document.getElementById('ml-search-again');
@@ -248,11 +253,17 @@ function resetMlLab() {
   const textarea = document.getElementById('ml-lab-input');
   if (textarea) textarea.value = '';
 
-  /* Clear results grid */
+  /* Re-enable analyze button */
+  const analyzeBtn = mlLab.querySelector('.ml-lab-btn');
+  if (analyzeBtn) analyzeBtn.disabled = false;
+
+  /* Clear main results */
   clearResults();
+  const resultsSection = document.getElementById('results-section');
+  if (resultsSection) resultsSection.style.display = 'none';
 
   /* Scroll back to ML lab */
-  document.getElementById('ml-lab')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  mlLab.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function mlLabSeeAll() {
