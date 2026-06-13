@@ -74,6 +74,39 @@ export default async function handler(req, res) {
     ── */
     if (type === 'tmdb_search') {
       const { query, page = 1 } = payload;
+
+      /* Detect mood keywords and redirect to genre-based discovery */
+      const MOOD_KEYWORDS = {
+        happy:     { keywords: ['happy','funny','comedy','cheerful'],      genres: [35, 10751, 16] },
+        sad:       { keywords: ['sad','emotional','cry','moving'],          genres: [18] },
+        romantic:  { keywords: ['romantic','love','romance'],               genres: [10749, 18] },
+        scary:     { keywords: ['scary','horror','terrifying'],             genres: [27, 53] },
+        action:    { keywords: ['action','fight','adventure'],              genres: [28, 12] },
+        scifi:     { keywords: ['scifi','space','future','robot'],          genres: [878, 14] },
+        thriller:  { keywords: ['thriller','suspense','mystery'],           genres: [53, 9648] },
+        animation: { keywords: ['animation','cartoon','animated'],          genres: [16, 10751] },
+      };
+
+      const lowerQuery = query.toLowerCase();
+      for (const { keywords, genres } of Object.values(MOOD_KEYWORDS)) {
+        if (keywords.some(k => lowerQuery.includes(k))) {
+          const genreStr = genres.join(',');
+          const pages = await Promise.all([
+            tmdb(`/discover/movie?with_genres=${genreStr}&sort_by=popularity.desc&page=${page}&vote_count.gte=50`),
+            tmdb(`/discover/movie?with_genres=${genreStr}&sort_by=popularity.desc&page=${page + 1}&vote_count.gte=50`),
+            tmdb(`/discover/movie?with_genres=${genreStr}&sort_by=popularity.desc&page=${page + 2}&vote_count.gte=50`),
+          ]);
+          const seen = new Set();
+          const results = [];
+          for (const p of pages) {
+            for (const m of (p.results || [])) {
+              if (!seen.has(m.id) && m.poster_path) { seen.add(m.id); results.push(m); }
+            }
+          }
+          return res.status(200).json({ results, total_pages: pages[0].total_pages || 1 });
+        }
+      }
+
       const q = encodeURIComponent(query);
 
       /* Fetch 3 pages of search results in parallel */

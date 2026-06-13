@@ -296,22 +296,20 @@ async function handleSearch() {
 
   setTimeout(() => document.getElementById('results-section')?.scrollIntoView({ behavior:'smooth', block:'start' }), 120);
 
-  /* Run sentiment analysis and TMDb search in parallel */
-  const [, mlResult] = await Promise.allSettled([
-    fetchSearchMovies(query, 1, false),
-    mlApi('ml_sentiment', { text: query }),
-  ]);
-
-  if (mlResult.status === 'fulfilled') {
-    const { mood, confidence } = mlResult.value ?? {};
-    if (mood && confidence > 0.6) {
-      state.detectedMood = mood;
-      showMlBadge(mood, confidence);
-      /* Auto-select the mood card without triggering a new fetch */
-      document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('active'));
-      document.getElementById(`mood-${mood}`)?.classList.add('active');
+  /* First check ML sentiment — if confident enough, redirect to mood-based results */
+  const mlResult = await mlApi('ml_sentiment', { text: query }).catch(() => null);
+  if (mlResult) {
+    const { mood, confidence } = mlResult;
+    if (mood && confidence > 0.5) {
+      showLoading(false);
+      showToast(`Detected mood: ${mood} (${Math.round(confidence * 100)}% confident)`, 'info');
+      pickMood(mood);
+      return;
     }
   }
+
+  /* Low confidence — fall back to normal TMDb text search */
+  await fetchSearchMovies(query, 1, false);
 }
 
 async function fetchSearchMovies(query, page, append) {
