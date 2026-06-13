@@ -124,146 +124,112 @@ function hideMlResult() {
 ══════════════════════════════════════════════════════════ */
 let mlLabLastMood = null;
 
-function typeWriter(el, text, speed = 45) {
+function typeWriter(el, text, speed = 50) {
   if (!el) return;
   el.textContent = '';
   let i = 0;
-  const tick = setInterval(() => {
-    el.textContent += text[i++];
-    if (i >= text.length) clearInterval(tick);
+  const timer = setInterval(() => {
+    if (i < text.length) { el.textContent += text.charAt(i); i++; }
+    else clearInterval(timer);
   }, speed);
 }
 
 async function runMlLab() {
-  const input = document.getElementById('ml-lab-input');
-  const text  = (input?.value ?? '').trim();
-  if (!text) { showToast('Describe your mood in the ML Lab first!', 'info'); return; }
+  const textarea = document.getElementById('ml-text-input');
+  if (!textarea) return;
+  const text = textarea.value.trim();
+  if (!text) {
+    textarea.style.borderColor = '#ef4444';
+    setTimeout(() => textarea.style.borderColor = '', 2000);
+    showToast('Describe your mood first!', 'info');
+    return;
+  }
 
-  const btn       = document.querySelector('.ml-lab-btn');
-  const inputPanel = document.querySelector('.ml-lab-input-panel');
-  const loading   = document.getElementById('ml-loading');
-  const results   = document.getElementById('ml-lab-results');
-  const proc      = document.getElementById('ml-lab-processing');
+  /* Hide input, show loading */
+  document.getElementById('ml-input-wrapper').style.display = 'none';
+  document.getElementById('ml-result-panel').style.display = 'none';
+  document.getElementById('ml-loading').style.display = 'block';
 
-  /* Hide input panel, show brain pulse loader */
-  if (btn) btn.disabled = true;
-  if (proc) proc.style.display = 'none';
-  if (inputPanel) inputPanel.style.display = 'none';
-  if (loading) loading.style.display = 'flex';
-  if (results) results.style.display = 'none';
-
-  /* Run API + enforce 2s minimum dramatic pause in parallel */
-  let mlResult = null;
+  let data;
   try {
     const [res] = await Promise.all([
-      mlApi('ml_sentiment', { text }),
+      fetch('/api/ml', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'ml_sentiment', payload: { text } }),
+      }).then(r => r.json()),
       new Promise(r => setTimeout(r, 2000)),
     ]);
-    mlResult = res;
+    data = res;
   } catch (err) {
-    if (loading) loading.style.display = 'none';
-    if (inputPanel) inputPanel.style.display = 'block';
-    if (btn) btn.disabled = false;
-    showToast('ML analysis failed — try again!', 'error');
+    console.error('ML Lab error:', err);
+    document.getElementById('ml-loading').style.display = 'none';
+    document.getElementById('ml-input-wrapper').style.display = 'block';
+    showToast('Something went wrong. Please try again.', 'error');
     return;
   }
 
-  if (loading) loading.style.display = 'none';
-  if (btn) btn.disabled = false;
+  /* Hide loading, show result panel */
+  document.getElementById('ml-loading').style.display = 'none';
+  document.getElementById('ml-result-panel').style.display = 'block';
 
-  const { mood, confidence, keywords_found } = mlResult || {};
-  if (!mood) {
-    if (inputPanel) inputPanel.style.display = 'block';
-    showToast('No mood detected — try more descriptive text.', 'info');
-    return;
-  }
-
-  mlLabLastMood = mood;
+  const { mood, confidence, keywords_found } = data || {};
   const moodData = MOODS.find(m => m.id === mood);
-  const emoji    = moodData?.emoji ?? '🧠';
+  const emoji    = moodData?.emoji ?? '🎭';
 
-  /* Populate mood row */
-  document.getElementById('ml-lab-emoji').textContent    = emoji;
-  document.getElementById('ml-lab-conf-pct').textContent = `${confidence}%`;
+  /* Typewriter mood display */
+  typeWriter(
+    document.getElementById('ml-mood-display'),
+    `${emoji} ${moodData?.label ?? mood ?? 'Unknown'} — ${confidence ?? 0}% confidence`,
+    40
+  );
 
-  /* Show results panel */
-  if (results) results.style.display = 'block';
+  /* Animate confidence bar */
+  setTimeout(() => {
+    const bar = document.getElementById('ml-confidence-bar');
+    if (bar) bar.style.width = `${confidence ?? 0}%`;
+  }, 500);
 
-  /* Typewriter on mood name */
-  typeWriter(document.getElementById('ml-mood-display'), moodData?.label ?? mood);
-
-  /* Animate confidence bar after a tick */
-  requestAnimationFrame(() => {
-    const bar = document.getElementById('ml-lab-bar');
-    if (bar) bar.style.width = `${confidence}%`;
-  });
-
-  /* Keywords — staggered pop-in */
-  const kwContainer = document.getElementById('ml-lab-keywords');
-  if (kwContainer) {
-    kwContainer.innerHTML = '';
-    (keywords_found?.slice(0, 8) ?? []).forEach((kw, i) => {
+  /* Keywords */
+  const kwEl = document.getElementById('ml-keywords');
+  if (kwEl) {
+    kwEl.innerHTML = '';
+    (keywords_found?.slice(0, 8) ?? []).forEach(kw => {
       const tag = document.createElement('span');
-      tag.className = 'ml-lab-kw-tag';
       tag.textContent = kw;
-      tag.style.animationDelay = `${i * 0.07}s`;
-      kwContainer.appendChild(tag);
+      tag.style.cssText = 'padding:4px 12px; background:rgba(124,58,237,0.2); color:#A78BFA; border-radius:20px; font-size:12px; font-weight:600;';
+      kwEl.appendChild(tag);
     });
   }
 
-  /* Use pickMood to load movies into the main results grid */
+  /* Load movies via pickMood */
   const validMoods = ['happy','sad','romantic','thriller','scifi','action','horror','animation'];
-  const moodId = validMoods.includes(mood.toLowerCase().trim()) ? mood.toLowerCase().trim() : 'happy';
-
+  const moodId = validMoods.includes((mood ?? '').toLowerCase()) ? mood.toLowerCase() : 'happy';
+  mlLabLastMood = moodId;
   pickMood(moodId);
 
+  /* Scroll to results */
   setTimeout(() => {
     document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 500);
-
-  setTimeout(() => {
-    const searchAgainBtn = document.getElementById('ml-search-again');
-    if (searchAgainBtn) searchAgainBtn.style.display = 'block';
-  }, 2000);
+  }, 800);
 }
 
 function resetMlLab() {
-  const mlLab = document.getElementById('ml-lab');
-  if (!mlLab) return;
+  document.getElementById('ml-input-wrapper').style.display = 'block';
+  document.getElementById('ml-result-panel').style.display = 'none';
+  document.getElementById('ml-loading').style.display = 'none';
 
-  /* Show input panel */
-  const inputPanel = mlLab.querySelector('.ml-lab-input-panel');
-  if (inputPanel) inputPanel.style.display = 'block';
+  const textarea = document.getElementById('ml-text-input');
+  if (textarea) { textarea.value = ''; textarea.style.borderColor = ''; }
 
-  /* Hide results panel */
-  ['ml-lab-results', 'ml-loading'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
-
-  /* Hide search again button */
-  const btn = document.getElementById('ml-search-again');
-  if (btn) btn.style.display = 'none';
-
-  /* Reset confidence bar */
-  const bar = document.getElementById('ml-lab-bar');
+  const bar = document.getElementById('ml-confidence-bar');
   if (bar) bar.style.width = '0%';
 
-  /* Clear textarea */
-  const textarea = document.getElementById('ml-lab-input');
-  if (textarea) textarea.value = '';
-
-  /* Re-enable analyze button */
-  const analyzeBtn = mlLab.querySelector('.ml-lab-btn');
-  if (analyzeBtn) analyzeBtn.disabled = false;
-
-  /* Clear main results */
   clearResults();
   const resultsSection = document.getElementById('results-section');
   if (resultsSection) resultsSection.style.display = 'none';
 
-  /* Scroll back to ML lab */
-  mlLab.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('ml-lab')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function mlLabSeeAll() {

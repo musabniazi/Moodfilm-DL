@@ -64,78 +64,52 @@
 
   <!-- ML LAB -->
   <section id="ml-lab">
-    <div class="section-inner">
-      <div class="ml-lab-header">
-        <h2 class="section-title">🧠 ML Mood <span class="accent">Lab</span></h2>
-        <p class="section-subtitle">Real-time emotion analysis powered by machine learning</p>
-      </div>
-      <!-- Brain pulse loader -->
-      <div id="ml-loading" style="display:none;">
-        <div class="neural-loader">
-          <span class="brain-pulse">🧠</span>
-          <div class="loader-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <p class="loader-text">Analyzing your mood...</p>
-          <p class="loader-subtext">NLP processing · Sentiment scoring · Matching movies</p>
-        </div>
-      </div>
+    <div class="section-inner" style="text-align:center;">
+      <h2 class="section-title">🧠 ML Mood <span class="gradient-text">Lab</span></h2>
+      <p class="section-subtitle">Real-time emotion analysis powered by machine learning</p>
 
-      <div class="ml-lab-grid">
-
-        <!-- Input panel -->
-        <div class="ml-lab-input-panel">
-          <label class="ml-lab-label">How are you feeling right now?</label>
-          <textarea id="ml-lab-input" class="ml-lab-textarea"
-            placeholder="Describe in detail... e.g. 'I feel pumped and ready for something epic' or 'I'm heartbroken and want a good cry'"
-            rows="5"></textarea>
-          <button class="ml-lab-btn" onclick="runMlLab()">
-            <span>🧠</span> Analyze &amp; Find Movies
-          </button>
-
-          <div id="ml-lab-processing" class="ml-processing" style="display:none;">
-            <div class="ml-processing-dot"></div>
-            <div class="ml-processing-dot"></div>
-            <div class="ml-processing-dot"></div>
-            <span>Analyzing your mood...</span>
-          </div>
-        </div>
-
-        <!-- Results panel -->
-        <div class="ml-lab-results-panel" id="ml-lab-results" style="display:none;">
-
-          <!-- Detected mood -->
-          <div class="ml-lab-mood-row">
-            <div class="ml-lab-mood-emoji" id="ml-lab-emoji">🧠</div>
-            <div class="ml-lab-mood-info">
-              <div class="ml-lab-mood-label">Detected Mood</div>
-              <div class="ml-lab-mood-name" id="ml-mood-display">—</div>
-            </div>
-            <div class="ml-lab-conf-wrap">
-              <div class="ml-lab-conf-label">Confidence</div>
-              <div class="ml-lab-conf-pct" id="ml-lab-conf-pct">0%</div>
-            </div>
-          </div>
-
-          <!-- Confidence bar -->
-          <div class="ml-lab-bar-track">
-            <div class="ml-lab-bar-fill" id="ml-lab-bar"></div>
-          </div>
-
-          <!-- Keywords -->
-          <div class="ml-lab-kw-section">
-            <div class="ml-lab-section-label">📌 Keywords Detected</div>
-            <div class="ml-lab-kw-tags" id="ml-lab-keywords"></div>
-          </div>
-
-          <div id="ml-lab-movies" style="display:none;"></div>
-        </div>
-
+      <!-- INPUT PANEL -->
+      <div id="ml-input-wrapper" style="max-width:680px; margin:0 auto;">
+        <textarea
+          id="ml-text-input"
+          class="ml-lab-textarea"
+          placeholder='How are you feeling right now? e.g. "I feel lonely and sad" or "I am excited and pumped"'
+          rows="4"
+          onfocus="this.style.borderColor='var(--accent)'; this.style.boxShadow='0 0 0 3px rgba(124,58,237,0.15)'"
+          onblur="this.style.borderColor=''; this.style.boxShadow=''"
+        ></textarea>
+        <button id="ml-analyze-btn" class="ml-lab-btn" onclick="runMlLab()">
+          🧠 Analyze My Mood &amp; Find Movies
+        </button>
       </div>
 
-      <button id="ml-search-again" onclick="resetMlLab()" style="display:none;">
-        🔄 Try Another Mood
-      </button>
+      <!-- LOADING PANEL -->
+      <div id="ml-loading" style="display:none; padding:48px 24px;">
+        <div style="font-size:64px; animation:brainPulse 1s ease-in-out infinite; display:block; margin-bottom:24px;">🧠</div>
+        <div style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
+          <span class="ldot"></span>
+          <span class="ldot" style="animation-delay:0.2s"></span>
+          <span class="ldot" style="animation-delay:0.4s"></span>
+        </div>
+        <p style="font-size:18px; font-weight:600; color:var(--text); margin-bottom:8px;">Analyzing your mood...</p>
+        <p style="font-size:13px; color:var(--text3);">NLP processing · Sentiment scoring · Matching movies</p>
+      </div>
+
+      <!-- RESULT PANEL -->
+      <div id="ml-result-panel" style="display:none; max-width:680px; margin:24px auto 0 auto; background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:24px; text-align:left;">
+        <div id="ml-mood-display" style="font-size:20px; font-weight:700; color:var(--text); margin-bottom:12px;"></div>
+        <div style="background:var(--bg); border-radius:8px; height:8px; margin-bottom:16px; overflow:hidden;">
+          <div id="ml-confidence-bar" style="height:100%; background:linear-gradient(90deg,#7C3AED,#06B6D4); width:0%; transition:width 1s ease; border-radius:8px;"></div>
+        </div>
+        <div id="ml-keywords" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;"></div>
+        <button
+          onclick="resetMlLab()"
+          class="ml-reset-btn"
+        >
+          🔄 Try Another Mood
+        </button>
+      </div>
+
     </div>
   </section>
 
