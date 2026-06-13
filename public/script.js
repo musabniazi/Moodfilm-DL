@@ -102,47 +102,73 @@ function hideMlResult() {
 ══════════════════════════════════════════════════════════ */
 let mlLabLastMood = null;
 
+function typeWriter(el, text, speed = 45) {
+  if (!el) return;
+  el.textContent = '';
+  let i = 0;
+  const tick = setInterval(() => {
+    el.textContent += text[i++];
+    if (i >= text.length) clearInterval(tick);
+  }, speed);
+}
+
 async function runMlLab() {
   const input = document.getElementById('ml-lab-input');
   const text  = (input?.value ?? '').trim();
   if (!text) { showToast('Describe your mood in the ML Lab first!', 'info'); return; }
 
-  const btn = document.querySelector('.ml-lab-btn');
-  if (btn) { btn.disabled = true; }
+  const btn       = document.querySelector('.ml-lab-btn');
+  const inputPanel = document.querySelector('.ml-lab-input-panel');
+  const loading   = document.getElementById('ml-loading');
+  const results   = document.getElementById('ml-lab-results');
+  const proc      = document.getElementById('ml-lab-processing');
 
-  const proc = document.getElementById('ml-lab-processing');
-  if (proc) proc.style.display = 'flex';
-
-  const results = document.getElementById('ml-lab-results');
+  /* Hide input panel, show brain pulse loader */
+  if (btn) btn.disabled = true;
+  if (proc) proc.style.display = 'none';
+  if (inputPanel) inputPanel.style.display = 'none';
+  if (loading) loading.style.display = 'flex';
   if (results) results.style.display = 'none';
 
+  /* Run API + enforce 2s minimum dramatic pause in parallel */
   let mlResult = null;
   try {
-    mlResult = await mlApi('ml_sentiment', { text });
+    const [res] = await Promise.all([
+      mlApi('ml_sentiment', { text }),
+      new Promise(r => setTimeout(r, 2000)),
+    ]);
+    mlResult = res;
   } catch (err) {
-    if (proc) proc.style.display = 'none';
-    if (btn)  btn.disabled = false;
+    if (loading) loading.style.display = 'none';
+    if (inputPanel) inputPanel.style.display = 'block';
+    if (btn) btn.disabled = false;
     showToast('ML analysis failed — try again!', 'error');
     return;
   }
 
-  if (proc) proc.style.display = 'none';
-  if (btn)  btn.disabled = false;
+  if (loading) loading.style.display = 'none';
+  if (btn) btn.disabled = false;
 
   const { mood, confidence, keywords_found } = mlResult || {};
-  if (!mood) { showToast('No mood detected — try more descriptive text.', 'info'); return; }
+  if (!mood) {
+    if (inputPanel) inputPanel.style.display = 'block';
+    showToast('No mood detected — try more descriptive text.', 'info');
+    return;
+  }
 
   mlLabLastMood = mood;
   const moodData = MOODS.find(m => m.id === mood);
   const emoji    = moodData?.emoji ?? '🧠';
 
   /* Populate mood row */
-  document.getElementById('ml-lab-emoji').textContent      = emoji;
-  document.getElementById('ml-lab-mood-name').textContent  = moodData?.label ?? mood;
-  document.getElementById('ml-lab-conf-pct').textContent   = `${confidence}%`;
+  document.getElementById('ml-lab-emoji').textContent    = emoji;
+  document.getElementById('ml-lab-conf-pct').textContent = `${confidence}%`;
 
-  /* Show results panel first so bar transition fires */
-  if (results) { results.style.display = 'block'; }
+  /* Show results panel */
+  if (results) results.style.display = 'block';
+
+  /* Typewriter on mood name */
+  typeWriter(document.getElementById('ml-mood-display'), moodData?.label ?? mood);
 
   /* Animate confidence bar after a tick */
   requestAnimationFrame(() => {
@@ -154,8 +180,7 @@ async function runMlLab() {
   const kwContainer = document.getElementById('ml-lab-keywords');
   if (kwContainer) {
     kwContainer.innerHTML = '';
-    const kws = keywords_found?.slice(0, 8) ?? [];
-    kws.forEach((kw, i) => {
+    (keywords_found?.slice(0, 8) ?? []).forEach((kw, i) => {
       const tag = document.createElement('span');
       tag.className = 'ml-lab-kw-tag';
       tag.textContent = kw;
@@ -167,9 +192,7 @@ async function runMlLab() {
   /* Fetch 3 movie posters */
   const moviesEl = document.getElementById('ml-lab-movies');
   const seeAll   = document.getElementById('ml-lab-see-all');
-  if (moviesEl) {
-    moviesEl.innerHTML = '<div class="ml-lab-movies-loading"><span class="spinner-sm"></span> Finding matches...</div>';
-  }
+  if (moviesEl) moviesEl.innerHTML = '<div class="ml-lab-movies-loading"><span class="spinner-sm"></span> Finding matches...</div>';
   if (seeAll) seeAll.style.display = 'none';
 
   try {
