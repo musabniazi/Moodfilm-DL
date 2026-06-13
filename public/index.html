@@ -50,8 +50,7 @@
     <div class="hero-content">
       <div class="hero-badge">🧠 Powered by Machine Learning</div>
       <h1 class="hero-title">
-        Tell Us How<br />
-        <span class="hero-accent">You Feel</span>
+        Tell Us How You <span class="gradient-text">Feel</span>
       </h1>
       <p class="hero-subtitle">
         Our ML model reads your emotions and finds the perfect movie instantly
@@ -309,15 +308,5 @@
   </footer>
 
   <script src="script.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script>
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smooth: true,
-    });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-  </script>
 </body>
 </html>
