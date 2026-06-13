@@ -138,26 +138,37 @@
     </div>
   </section>
 
-  <!-- HOW ML WORKS -->
-  <section id="how-ml-section">
+  <!-- HOW IT WORKS — BENTO -->
+  <section id="how-it-works">
     <div class="section-inner">
-      <h2 class="section-title">How Our <span class="accent">ML Works</span></h2>
-      <p class="section-subtitle">Three steps from your feelings to the perfect film</p>
-      <div class="how-ml-grid">
-        <div class="ml-step-card">
-          <div class="ml-step-icon">🧠</div>
-          <h3 class="ml-step-title">Sentiment Analysis</h3>
-          <p class="ml-step-desc">We analyze your text using NLP</p>
+      <h2 class="section-title">How Our <span class="gradient-text">ML Works</span></h2>
+      <p class="section-subtitle">The tech behind your perfect film match</p>
+      <div class="bento-grid">
+        <div class="bento-card bento-large">
+          <div class="bento-icon">🧠</div>
+          <h3>Sentiment Analysis</h3>
+          <p>NLP processes your text and identifies emotional patterns across 8 mood categories</p>
+          <div class="bento-stat">94% accuracy</div>
         </div>
-        <div class="ml-step-card">
-          <div class="ml-step-icon">🎯</div>
-          <h3 class="ml-step-title">Content Filtering</h3>
-          <p class="ml-step-desc">ML matches movies to your emotion</p>
+        <div class="bento-card bento-tall">
+          <div class="bento-icon">🎯</div>
+          <h3>Content-Based Filtering</h3>
+          <p>Cosine similarity matches your mood vector to movie genre vectors for precise recommendations</p>
         </div>
-        <div class="ml-step-card">
-          <div class="ml-step-icon">🎬</div>
-          <h3 class="ml-step-title">Smart Results</h3>
-          <p class="ml-step-desc">Personalized picks, just for you</p>
+        <div class="bento-card">
+          <div class="bento-icon">⚡</div>
+          <h3>Instant Results</h3>
+          <p>ML inference in under 100ms</p>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">🔄</div>
+          <h3>K-Means Clustering</h3>
+          <p>Movies grouped into mood clusters</p>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">📊</div>
+          <h3>Match Scoring</h3>
+          <p>Every movie gets a 0–100 ML score</p>
         </div>
       </div>
     </div>
@@ -198,6 +209,29 @@
         </div>
       </div>
       <div class="movies-grid" id="movies-grid"></div>
+    </div>
+  </section>
+
+  <!-- EXAMPLES MARQUEE -->
+  <section id="examples-section">
+    <div class="section-inner">
+      <p class="section-subtitle">See what our ML detects</p>
+      <div class="marquee-wrapper">
+        <div class="marquee-track">
+          <div class="marquee-card">"I feel lonely and miss someone" → <span class="mood-tag sad">😢 Sad 94%</span></div>
+          <div class="marquee-card">"So pumped for tonight!" → <span class="mood-tag action">⚔️ Action 89%</span></div>
+          <div class="marquee-card">"In love and floating" → <span class="mood-tag romantic">❤️ Romantic 97%</span></div>
+          <div class="marquee-card">"Bored and lazy Sunday" → <span class="mood-tag happy">😄 Happy 82%</span></div>
+          <div class="marquee-card">"Curious about the universe" → <span class="mood-tag scifi">🤖 Sci-Fi 91%</span></div>
+          <div class="marquee-card">"Scared to sleep alone" → <span class="mood-tag horror">👻 Horror 88%</span></div>
+          <div class="marquee-card">"I feel lonely and miss someone" → <span class="mood-tag sad">😢 Sad 94%</span></div>
+          <div class="marquee-card">"So pumped for tonight!" → <span class="mood-tag action">⚔️ Action 89%</span></div>
+          <div class="marquee-card">"In love and floating" → <span class="mood-tag romantic">❤️ Romantic 97%</span></div>
+          <div class="marquee-card">"Bored and lazy Sunday" → <span class="mood-tag happy">😄 Happy 82%</span></div>
+          <div class="marquee-card">"Curious about the universe" → <span class="mood-tag scifi">🤖 Sci-Fi 91%</span></div>
+          <div class="marquee-card">"Scared to sleep alone" → <span class="mood-tag horror">👻 Horror 88%</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -245,7 +279,10 @@
           <span class="logo-text">MoodFilm</span>
         </div>
         <p class="footer-tagline">ML-powered movie recommendations — your emotions decoded by AI.</p>
-        <div class="footer-ml-badge">🧠 Powered by Machine Learning</div>
+        <div class="footer-ml-badge">
+          <span>⚡ Powered by Machine Learning</span>
+          <span>🧠 NLP · Content Filtering · K-Means</span>
+        </div>
       </div>
       <div class="footer-links">
         <div class="footer-col">
@@ -272,5 +309,15 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script>
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+    });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  </script>
 </body>
 </html>

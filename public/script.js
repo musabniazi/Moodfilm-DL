@@ -482,6 +482,7 @@ function renderGrid(movies, gridId) {
     return;
   }
   movies.forEach((m, i) => grid.appendChild(buildCard(m, i)));
+  observeCards();
 }
 
 function appendGrid(movies, gridId) {
@@ -489,6 +490,7 @@ function appendGrid(movies, gridId) {
   if (!grid) return;
   grid.querySelector('.empty-state')?.remove();
   movies.forEach((m, i) => grid.appendChild(buildCard(m, i)));
+  observeCards();
 }
 
 function buildMatchBadge(score) {
@@ -796,4 +798,54 @@ function clearGrid() {
 
 function esc(str) {
   return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SCROLL PROGRESS + INTERSECTION OBSERVER + HERO REVEAL
+══════════════════════════════════════════════════════════ */
+
+/* Scroll progress bar */
+const _progressBar = document.createElement('div');
+_progressBar.id = 'scroll-progress';
+document.body.prepend(_progressBar);
+window.addEventListener('scroll', () => {
+  const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  _progressBar.style.width = scrolled + '%';
+}, { passive: true });
+
+/* Intersection observer — reveals .movie-card and .bento-card */
+const _cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      _cardObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+function observeCards() {
+  document.querySelectorAll('.movie-card:not(.visible), .bento-card:not(.visible)').forEach(card => {
+    _cardObserver.observe(card);
+  });
+}
+
+/* Kick off bento card observation once DOM is ready */
+document.addEventListener('DOMContentLoaded', () => {
+  observeCards();
+  revealHeroWords();
+});
+
+/* Hero word-by-word reveal */
+function revealHeroWords() {
+  const title = document.querySelector('.hero-title');
+  if (!title) return;
+  /* Preserve inner HTML structure by wrapping text nodes only */
+  const rawHTML = title.innerHTML;
+  title.innerHTML = rawHTML.replace(/([^\s<]+)/g, '<span class="hero-word">$1</span>');
+  setTimeout(() => {
+    title.querySelectorAll('.hero-word').forEach((w, i) => {
+      setTimeout(() => w.classList.add('visible'), i * 80);
+    });
+  }, 300);
 }
