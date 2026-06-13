@@ -220,6 +220,39 @@ async function runMlLab() {
   setTimeout(() => {
     document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 500);
+
+  setTimeout(() => {
+    const searchAgainBtn = document.getElementById('ml-search-again');
+    if (searchAgainBtn) searchAgainBtn.style.display = 'block';
+  }, 2000);
+}
+
+function resetMlLab() {
+  /* Show input panel */
+  const inputPanel = document.querySelector('.ml-lab-input-panel');
+  if (inputPanel) inputPanel.style.display = 'block';
+
+  /* Hide results panel */
+  const results = document.getElementById('ml-lab-results');
+  if (results) results.style.display = 'none';
+
+  /* Hide search again button */
+  const btn = document.getElementById('ml-search-again');
+  if (btn) btn.style.display = 'none';
+
+  /* Reset confidence bar */
+  const bar = document.getElementById('ml-lab-bar');
+  if (bar) bar.style.width = '0%';
+
+  /* Clear textarea */
+  const textarea = document.getElementById('ml-lab-input');
+  if (textarea) textarea.value = '';
+
+  /* Clear results grid */
+  clearResults();
+
+  /* Scroll back to ML lab */
+  document.getElementById('ml-lab')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function mlLabSeeAll() {
