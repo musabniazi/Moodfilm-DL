@@ -68,21 +68,23 @@ let state = {
    All requests go to /api/gemini on the Vercel server.
    The server holds the TMDb key — browser never sees it.
 */
-const BACKEND_URL = 'https://moodfilm-backend.onrender.com';
-
 async function api(type, payload = {}) {
-  const res = await fetch(`${BACKEND_URL}/api/movies`, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ type, payload }),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || `Server error ${res.status}`);
-  return data;
+  /* Route to correct Vercel Python endpoint based on request type */
+  if (type === 'tmdb_mood' || type === 'tmdb_top' || type === 'tmdb_trending' ||
+      type === 'tmdb_search' || type === 'tmdb_detail' || type === 'tmdb_similar') {
+    const mood = payload.mood || state.selectedMood || 'happy';
+    const page = payload.page || 1;
+    const res  = await fetch(`/api/gemini?mood=${mood}&page=${page}&type=${type}${payload.query ? '&query=' + encodeURIComponent(payload.query) : ''}${payload.id ? '&id=' + payload.id : ''}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `Server error ${res.status}`);
+    /* Wrap bare array in { results } for backward compat */
+    return Array.isArray(data) ? { results: data } : data;
+  }
+  throw new Error(`Unknown api type: ${type}`);
 }
 
 async function mlApi(type, payload = {}) {
-  const res = await fetch(`${BACKEND_URL}/api/ml`, {
+  const res = await fetch('/api/ml', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ type, payload }),
@@ -157,7 +159,7 @@ async function runMlLab() {
   let data;
   try {
     const [res] = await Promise.all([
-      fetch(`${BACKEND_URL}/api/ml`, {
+      fetch('/api/ml', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'ml_sentiment', payload: { text } }),
