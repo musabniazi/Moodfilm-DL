@@ -894,19 +894,23 @@ footer::before {
   box-shadow: 0 0 30px rgba(124,58,237,.15);
 }
 .bento-large { grid-column: span 2; }
-.bento-tall  { grid-row: span 2; }
 .bento-icon  { font-size: 32px; margin-bottom: 12px; }
 .bento-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .bento-card p  { font-size: 13px; color: var(--text2); line-height: 1.6; }
 .bento-stat {
-  font-size: 36px;
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  font-size: 52px;
   font-weight: 800;
   background: linear-gradient(135deg, #7C3AED, #06B6D4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-top: 12px;
-  opacity: 0.9;
+  opacity: 0.18;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
 }
 #how-it-works .section-title { display: inline-block; }
 
