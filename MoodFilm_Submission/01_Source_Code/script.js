@@ -68,10 +68,8 @@ let state = {
    All requests go to /api/gemini on the Vercel server.
    The server holds the TMDb key — browser never sees it.
 */
-const BACKEND_URL = 'https://moodfilm-backend.onrender.com';
-
 async function api(type, payload = {}) {
-  const res = await fetch(`${BACKEND_URL}/api/movies`, {
+  const res = await fetch('/api/gemini', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ type, payload }),
@@ -82,7 +80,7 @@ async function api(type, payload = {}) {
 }
 
 async function mlApi(type, payload = {}) {
-  const res = await fetch(`${BACKEND_URL}/api/ml`, {
+  const res = await fetch('/api/ml', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ type, payload }),
@@ -157,7 +155,7 @@ async function runMlLab() {
   let data;
   try {
     const [res] = await Promise.all([
-      fetch(`${BACKEND_URL}/api/ml`, {
+      fetch('/api/ml', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'ml_sentiment', payload: { text } }),
