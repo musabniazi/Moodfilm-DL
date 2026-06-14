@@ -222,20 +222,39 @@ async function runMlLab() {
 }
 
 function resetMlLab() {
+  /* Hide result/loading panels, show input */
   document.getElementById('ml-result-panel').style.display = 'none';
   document.getElementById('ml-loading').style.display = 'none';
   document.getElementById('ml-input-wrapper').style.display = 'flex';
 
+  /* Clear textarea */
   const textarea = document.getElementById('ml-text-input');
   if (textarea) { textarea.value = ''; textarea.style.borderColor = ''; textarea.focus(); }
 
+  /* Reset confidence bar */
   const bar = document.getElementById('ml-confidence-bar');
   if (bar) bar.style.width = '0%';
 
+  /* Re-enable analyze button */
   const analyzeBtn = document.getElementById('ml-analyze-btn');
   if (analyzeBtn) analyzeBtn.disabled = false;
 
-  clearResults();
+  /* Hide movie results section and Search Again button */
+  document.getElementById('results-section').style.display = 'none';
+  const wrap = document.getElementById('search-again-wrap');
+  if (wrap) wrap.style.display = 'none';
+
+  /* Reset all state variables */
+  state.selectedMood = null;
+  state.currentPage  = 1;
+  state.searchQuery  = '';
+  state.searchPage   = 1;
+  state.detectedMood = null;
+  state.mode         = null;
+  state.lastAction   = null;
+  mlLabLastMood      = null;
+
+  hideMlBadge();
 
   document.getElementById('ml-lab')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -824,6 +843,8 @@ function showError(msg) {
 
 function showResults() {
   document.getElementById('results-section').style.display = 'block';
+  const wrap = document.getElementById('search-again-wrap');
+  if (wrap) wrap.style.display = 'block';
 }
 
 function clearGrid() {
