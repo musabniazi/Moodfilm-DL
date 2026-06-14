@@ -888,13 +888,6 @@ footer::before {
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(20px);
-}
-.bento-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .bento-card:hover {
   transform: scale(1.02);

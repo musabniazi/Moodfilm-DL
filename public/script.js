@@ -145,7 +145,8 @@ async function runMlLab() {
     return;
   }
 
-  /* Show loading, hide result panel (keep input visible) */
+  /* Hide input, show loading, hide result panel */
+  document.getElementById('ml-input-wrapper').style.display = 'none';
   document.getElementById('ml-result-panel').style.display = 'none';
   document.getElementById('ml-loading').style.display = 'block';
   const analyzeBtn = document.getElementById('ml-analyze-btn');
@@ -219,6 +220,7 @@ async function runMlLab() {
 function resetMlLab() {
   document.getElementById('ml-result-panel').style.display = 'none';
   document.getElementById('ml-loading').style.display = 'none';
+  document.getElementById('ml-input-wrapper').style.display = 'flex';
 
   const textarea = document.getElementById('ml-text-input');
   if (textarea) { textarea.value = ''; textarea.style.borderColor = ''; textarea.focus(); }
