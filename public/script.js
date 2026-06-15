@@ -320,11 +320,193 @@ function renderHeroParticles() {
 }
 
 
+/* ══════════════════════════════════════════════════════════
+   LSTM MOOD PREDICTOR
+══════════════════════════════════════════════════════════ */
+const LSTM_MOOD_META = {
+  happy:     { emoji: '😄', color: '#F59E0B' },
+  sad:       { emoji: '😢', color: '#6366F1' },
+  excited:   { emoji: '🎉', color: '#10B981' },
+  anxious:   { emoji: '😰', color: '#EF4444' },
+  romantic:  { emoji: '❤️', color: '#EC4899' },
+  angry:     { emoji: '😠', color: '#DC2626' },
+  bored:     { emoji: '😑', color: '#6B7280' },
+  nostalgic: { emoji: '🌅', color: '#8B5CF6' },
+};
+
+let lstmMoodHistory = [];
+
+function lstmPushMood(moodId) {
+  /* Normalize to the 8 LSTM moods — map app moods to closest LSTM mood */
+  const map = {
+    happy: 'happy', sad: 'sad', romantic: 'romantic',
+    thriller: 'anxious', scifi: 'excited', action: 'excited',
+    horror: 'anxious', animation: 'happy',
+  };
+  const lstmMood = map[moodId] || moodId;
+  if (!LSTM_MOOD_META[lstmMood]) return;
+
+  lstmMoodHistory.push(lstmMood);
+  if (lstmMoodHistory.length > 3) lstmMoodHistory.shift(); /* keep last 3 */
+  renderLstmPills();
+}
+
+function renderLstmPills() {
+  for (let i = 0; i < 3; i++) {
+    const pill = document.getElementById(`lstm-pill-${i}`);
+    if (!pill) continue;
+    const mood = lstmMoodHistory[i];
+    if (mood) {
+      const meta = LSTM_MOOD_META[mood];
+      pill.textContent = `${meta.emoji} ${mood}`;
+      pill.style.borderColor = meta.color;
+      pill.style.color        = meta.color;
+      pill.style.background   = `${meta.color}18`;
+      pill.classList.remove('lstm-pill-empty');
+    } else {
+      pill.textContent = '—';
+      pill.style.borderColor = '';
+      pill.style.color        = '';
+      pill.style.background   = '';
+      pill.classList.add('lstm-pill-empty');
+    }
+  }
+
+  const btn  = document.getElementById('lstm-predict-btn');
+  const hint = document.getElementById('lstm-hint');
+  if (btn)  btn.disabled = lstmMoodHistory.length < 2;
+  if (hint) hint.style.display = lstmMoodHistory.length >= 1 ? 'none' : 'block';
+}
+
+async function runLstmPredict() {
+  if (lstmMoodHistory.length < 2) {
+    showToast('Pick at least 2 moods first!', 'info');
+    return;
+  }
+
+  document.getElementById('lstm-result').style.display  = 'none';
+  document.getElementById('lstm-loading').style.display = 'block';
+  document.getElementById('lstm-predict-btn').disabled  = true;
+
+  let data;
+  try {
+    const res = await fetch('/api/lstm', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ mood_history: lstmMoodHistory }),
+    });
+    data = await res.json();
+  } catch (err) {
+    document.getElementById('lstm-loading').style.display = 'none';
+    document.getElementById('lstm-predict-btn').disabled  = false;
+    showToast('LSTM prediction failed. Try again.', 'error');
+    return;
+  }
+
+  document.getElementById('lstm-loading').style.display = 'none';
+  document.getElementById('lstm-predict-btn').disabled  = false;
+
+  const { predicted_mood, confidence, sequence_analysis } = data;
+  if (!predicted_mood) {
+    showToast('Unexpected response from LSTM.', 'error');
+    return;
+  }
+
+  renderLstmResult(predicted_mood, confidence, sequence_analysis);
+}
+
+function renderLstmResult(predicted, confidence, steps) {
+  const pct  = Math.round((confidence || 0) * 100);
+  const meta = LSTM_MOOD_META[predicted] || { emoji: '🎭', color: '#7C3AED' };
+
+  /* ── Sequence timeline ── */
+  const timeline = document.getElementById('lstm-timeline');
+  if (timeline) {
+    const allMoods = [...lstmMoodHistory, predicted];
+    timeline.innerHTML = allMoods.map((m, i) => {
+      const isPredicted = i === allMoods.length - 1;
+      const info = LSTM_MOOD_META[m] || { emoji: '🎭', color: '#7C3AED' };
+      return `
+        <div class="lstm-tl-item ${isPredicted ? 'lstm-tl-predicted' : ''}" style="animation-delay:${i * 0.12}s">
+          <div class="lstm-tl-dot" style="background:${info.color}; ${isPredicted ? `box-shadow:0 0 12px ${info.color}` : ''}"></div>
+          <div class="lstm-tl-mood" style="color:${info.color}">${info.emoji} ${m}</div>
+          ${isPredicted ? '<div class="lstm-tl-tag">predicted</div>' : ''}
+        </div>
+        ${i < allMoods.length - 1 ? `<div class="lstm-tl-arrow" style="animation-delay:${i * 0.12 + 0.06}s">→</div>` : ''}
+      `;
+    }).join('');
+  }
+
+  /* ── Predicted badge ── */
+  const badge = document.getElementById('lstm-predicted-badge');
+  if (badge) {
+    badge.textContent  = `${meta.emoji} ${predicted}`;
+    badge.style.color  = meta.color;
+    badge.style.borderColor = meta.color;
+    badge.style.background  = `${meta.color}18`;
+    badge.style.boxShadow   = `0 0 20px ${meta.color}40`;
+  }
+
+  /* ── Confidence bar ── */
+  document.getElementById('lstm-conf-pct').textContent = `${pct}%`;
+  setTimeout(() => {
+    const bar = document.getElementById('lstm-conf-bar');
+    if (bar) {
+      bar.style.width      = `${pct}%`;
+      bar.style.background = `linear-gradient(90deg, #7C3AED, ${meta.color})`;
+    }
+  }, 100);
+
+  /* ── Step analysis ── */
+  const stepEl = document.getElementById('lstm-step-analysis');
+  if (stepEl && steps?.length) {
+    stepEl.innerHTML = `
+      <div class="lstm-steps-title">Per-step gate analysis</div>
+      ${steps.map(s => `
+        <div class="lstm-step-row">
+          <span class="lstm-step-mood">${LSTM_MOOD_META[s.input_mood]?.emoji || ''} ${s.input_mood}</span>
+          <span class="lstm-step-arrow">→</span>
+          <span class="lstm-step-pred">${LSTM_MOOD_META[s.top_prediction]?.emoji || ''} ${s.top_prediction}</span>
+          <div class="lstm-gate-bars">
+            <div class="lstm-gate-bar" title="Forget gate: ${(s.forget_gate_avg*100).toFixed(0)}%">
+              <div style="width:${s.forget_gate_avg*100}%; background:#6366F1"></div>
+              <span>F</span>
+            </div>
+            <div class="lstm-gate-bar" title="Input gate: ${(s.input_gate_avg*100).toFixed(0)}%">
+              <div style="width:${s.input_gate_avg*100}%; background:#10B981"></div>
+              <span>I</span>
+            </div>
+            <div class="lstm-gate-bar" title="Output gate: ${(s.output_gate_avg*100).toFixed(0)}%">
+              <div style="width:${s.output_gate_avg*100}%; background:#F59E0B"></div>
+              <span>O</span>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    `;
+  }
+
+  document.getElementById('lstm-result').style.display = 'block';
+  document.getElementById('lstm-section')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetLstm() {
+  lstmMoodHistory = [];
+  renderLstmPills();
+  document.getElementById('lstm-result').style.display  = 'none';
+  document.getElementById('lstm-loading').style.display = 'none';
+  const bar = document.getElementById('lstm-conf-bar');
+  if (bar) { bar.style.width = '0%'; }
+  document.getElementById('lstm-conf-pct').textContent = '0%';
+}
+
 function pickMood(moodId) {
   state.selectedMood = moodId;
   state.currentPage  = 1;
   state.searchQuery  = '';
   state.mode         = 'mood';
+
+  lstmPushMood(moodId); /* track for LSTM */
 
   const mood = MOODS.find(m => m.id === moodId);
 

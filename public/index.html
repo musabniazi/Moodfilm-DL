@@ -161,6 +161,77 @@
     </button>
   </div>
 
+  <!-- LSTM MOOD PREDICTOR -->
+  <section id="lstm-section">
+    <div class="section-inner" style="text-align:center;">
+
+      <!-- Header -->
+      <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:8px;">
+        <h2 class="section-title" style="margin:0;">🧠 LSTM Mood <span class="gradient-text">Predictor</span></h2>
+        <span class="lstm-dl-badge">DEEP LEARNING</span>
+      </div>
+      <p class="section-subtitle">Deep Learning Sequence Analysis — predicts your next mood from history</p>
+
+      <!-- Main bento card -->
+      <div class="bento-card lstm-card" id="lstm-card">
+
+        <!-- Mood history pills -->
+        <div class="lstm-history-label">Your recent mood sequence</div>
+        <div id="lstm-history-pills" class="lstm-history-pills">
+          <div class="lstm-pill lstm-pill-empty" id="lstm-pill-0">—</div>
+          <div class="lstm-arrow">→</div>
+          <div class="lstm-pill lstm-pill-empty" id="lstm-pill-1">—</div>
+          <div class="lstm-arrow">→</div>
+          <div class="lstm-pill lstm-pill-empty" id="lstm-pill-2">—</div>
+        </div>
+
+        <p class="lstm-hint" id="lstm-hint">Pick moods above (via mood buttons) — they auto-fill here</p>
+
+        <!-- Predict button -->
+        <button id="lstm-predict-btn" class="lstm-predict-btn" onclick="runLstmPredict()" disabled>
+          <span class="lstm-btn-icon">⚡</span> Predict Next Mood
+        </button>
+
+        <!-- Loading state -->
+        <div id="lstm-loading" style="display:none; padding:24px 0;">
+          <div style="font-size:40px; animation:brainPulse 1s ease-in-out infinite; display:block; margin-bottom:12px;">🧠</div>
+          <p style="color:var(--text2); font-size:14px;">Running LSTM sequence analysis…</p>
+        </div>
+
+        <!-- Result area -->
+        <div id="lstm-result" style="display:none;">
+
+          <!-- Sequence timeline -->
+          <div class="lstm-timeline" id="lstm-timeline"></div>
+
+          <!-- Predicted mood badge -->
+          <div class="lstm-predicted-wrap">
+            <div class="lstm-predicted-label">Predicted next mood</div>
+            <div id="lstm-predicted-badge" class="lstm-predicted-badge"></div>
+          </div>
+
+          <!-- Confidence bar -->
+          <div class="lstm-conf-wrap">
+            <div class="lstm-conf-label">
+              <span>LSTM Confidence</span>
+              <span id="lstm-conf-pct">0%</span>
+            </div>
+            <div class="lstm-conf-track">
+              <div id="lstm-conf-bar" class="lstm-conf-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <!-- Step analysis -->
+          <div id="lstm-step-analysis" class="lstm-step-analysis"></div>
+
+          <!-- Reset -->
+          <button class="lstm-reset-btn" onclick="resetLstm()">↺ Clear &amp; Start Over</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- HOW IT WORKS — BENTO -->
   <section id="how-it-works">
     <div class="section-inner">
