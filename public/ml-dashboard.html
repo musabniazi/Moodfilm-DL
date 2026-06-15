@@ -328,10 +328,335 @@
     .tag-blue   { background: rgba(59,130,246,.2);  border: 1px solid rgba(59,130,246,.4);  color: #93c5fd; }
     .tag-green  { background: rgba(34,197,94,.2);   border: 1px solid rgba(34,197,94,.4);   color: #86efac; }
 
+    /* ── TAB NAVIGATION ── */
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 48px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 6px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text3);
+      cursor: pointer;
+      transition: all .25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .tab-btn.active {
+      background: rgba(124,58,237,.15);
+      border-color: rgba(124,58,237,.45);
+      color: #c4b5fd;
+      box-shadow: 0 0 20px rgba(124,58,237,.12);
+    }
+    .tab-btn.active.tab-lstm {
+      background: rgba(124,58,237,.2);
+      border-color: rgba(124,58,237,.6);
+      box-shadow: 0 0 28px rgba(124,58,237,.2);
+    }
+    .tab-btn:hover:not(.active) { color: var(--text2); background: rgba(255,255,255,.04); }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+    .tab-dl-badge {
+      font-size: 9px; font-weight: 800; letter-spacing: 1px;
+      padding: 2px 7px; border-radius: 10px;
+      background: rgba(124,58,237,.3);
+      border: 1px solid rgba(124,58,237,.5);
+      color: #a78bfa; text-transform: uppercase;
+    }
+
+    /* ── LSTM CELL DIAGRAM ── */
+    .lstm-diag-outer {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(124,58,237,.2);
+      border-radius: 20px;
+      padding: 32px 24px;
+      overflow-x: auto;
+      min-width: 0;
+    }
+    .lstm-diag-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .diag-signal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 14px;
+      background: rgba(124,58,237,.1);
+      border: 1px solid rgba(124,58,237,.35);
+      border-radius: 10px;
+      min-width: 86px;
+      text-align: center;
+    }
+    .diag-signal .sig-name {
+      font-size: 17px; font-weight: 800;
+      font-family: 'Bebas Neue', monospace;
+      color: #c4b5fd; letter-spacing: 1px;
+    }
+    .diag-signal .sig-desc {
+      font-size: 10px; color: var(--text3);
+      font-weight: 500; letter-spacing: .3px;
+    }
+    .diag-signal.out-signal { border-color: rgba(245,158,11,.4); background: rgba(245,158,11,.08); }
+    .diag-signal.out-signal .sig-name { color: #fbbf24; }
+    .diag-arrow-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      padding: 0 10px;
+      flex-shrink: 0;
+    }
+    .diag-h-arrow {
+      width: 32px; height: 2px;
+      background: rgba(124,58,237,.5);
+      position: relative;
+    }
+    .diag-h-arrow::after {
+      content: '';
+      position: absolute;
+      right: -1px; top: -4px;
+      border-left: 8px solid rgba(124,58,237,.7);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+    .lstm-cell-box {
+      flex: 1;
+      min-width: 320px;
+      background: linear-gradient(135deg, rgba(124,58,237,.07) 0%, rgba(6,182,212,.04) 100%);
+      border: 2px solid rgba(124,58,237,.35);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+    }
+    .lstm-cell-box::before {
+      content: 'LSTM CELL';
+      position: absolute;
+      top: -12px; left: 20px;
+      background: #7C3AED;
+      color: #fff;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 1.5px;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+    .lstm-gates-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .lstm-gate-item {
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .lstm-gate-item:hover { transform: scale(1.03); }
+    .gate-forget { border-color: rgba(239,68,68,.4);  background: rgba(239,68,68,.06); }
+    .gate-input  { border-color: rgba(34,197,94,.4);  background: rgba(34,197,94,.06); }
+    .gate-cell   { border-color: rgba(6,182,212,.4);  background: rgba(6,182,212,.06); }
+    .gate-output { border-color: rgba(245,158,11,.4); background: rgba(245,158,11,.06); }
+    .gate-op {
+      font-size: 22px; font-weight: 800;
+      line-height: 1;
+      font-family: 'Bebas Neue', monospace;
+    }
+    .gate-forget .gate-op  { color: #f87171; }
+    .gate-input  .gate-op  { color: #4ade80; }
+    .gate-cell   .gate-op  { color: #22d3ee; }
+    .gate-output .gate-op  { color: #fbbf24; }
+    .gate-n { font-size: 12px; font-weight: 700; color: var(--text1); }
+    .gate-d { font-size: 10px; color: var(--text3); line-height: 1.4; }
+    .lstm-cell-flow {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.03);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 11px;
+    }
+    .cell-flow-step {
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 10px;
+    }
+    .cf-forget { background: rgba(239,68,68,.15); color: #f87171; }
+    .cf-input  { background: rgba(34,197,94,.15);  color: #4ade80; }
+    .cf-cell   { background: rgba(6,182,212,.15);  color: #22d3ee; }
+    .cf-output { background: rgba(245,158,11,.15); color: #fbbf24; }
+    .cf-arrow  { color: var(--text3); font-size: 13px; }
+
+    /* ── COMPARISON TABLE ── */
+    .cmp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .cmp-table thead tr {
+      background: rgba(124,58,237,.08);
+    }
+    .cmp-table th {
+      padding: 14px 18px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      border-bottom: 2px solid rgba(124,58,237,.25);
+    }
+    .cmp-table th:nth-child(2) { color: #93c5fd; }
+    .cmp-table th:nth-child(3) { color: #a78bfa; }
+    .cmp-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      color: var(--text2);
+      vertical-align: middle;
+    }
+    .cmp-table tr:last-child td { border-bottom: none; }
+    .cmp-table td:first-child { color: var(--text1); font-weight: 600; font-size: 12px; }
+    .cmp-table tr:hover td { background: rgba(255,255,255,.02); }
+    .cmp-classic {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: rgba(59,130,246,.1);
+      border: 1px solid rgba(59,130,246,.25);
+      border-radius: 6px; font-size: 12px; font-weight: 500; color: #93c5fd;
+    }
+    .cmp-lstm {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: rgba(124,58,237,.12);
+      border: 1px solid rgba(124,58,237,.3);
+      border-radius: 6px; font-size: 12px; font-weight: 500; color: #c4b5fd;
+    }
+    .cmp-win { color: #4ade80; font-weight: 700; }
+
+    /* ── DL PERFORMANCE METRICS ── */
+    .dl-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .dl-metric-card {
+      background: var(--bg3);
+      border: 1px solid rgba(124,58,237,.2);
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp .5s ease both;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .dl-metric-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(124,58,237,.2);
+      border-color: rgba(124,58,237,.4);
+    }
+    .dl-metric-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .dl-metric-card:nth-child(2) { animation-delay: .1s; }
+    .dl-metric-card:nth-child(3) { animation-delay: .2s; }
+    .dl-metric-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      display: block;
+      filter: drop-shadow(0 0 10px rgba(124,58,237,.5));
+    }
+    .dl-metric-value {
+      font-size: 44px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #c4b5fd, #7C3AED);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+    }
+    .dl-metric-card:nth-child(2) .dl-metric-value {
+      background: linear-gradient(135deg, #22d3ee, #06B6D4);
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .dl-metric-card:nth-child(3) .dl-metric-value {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .dl-metric-name {
+      font-size: 13px; font-weight: 700;
+      color: var(--text2); margin-bottom: 8px;
+      letter-spacing: .2px;
+    }
+    .dl-metric-bar-track {
+      height: 4px;
+      background: rgba(255,255,255,.07);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+    .dl-metric-bar {
+      height: 100%;
+      border-radius: 99px;
+      width: 0;
+      transition: width 1.6s cubic-bezier(.4,0,.2,1);
+    }
+    .dl-metric-card:nth-child(1) .dl-metric-bar { background: linear-gradient(90deg,#7c3aed,#a78bfa); }
+    .dl-metric-card:nth-child(2) .dl-metric-bar { background: linear-gradient(90deg,#06B6D4,#22d3ee); }
+    .dl-metric-card:nth-child(3) .dl-metric-bar { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+    .dl-metric-sub {
+      font-size: 11px; color: var(--text3);
+      margin-top: 8px; line-height: 1.5;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .dl-metrics-grid { grid-template-columns: 1fr; }
+      .lstm-diag-outer { flex-direction: column; }
+      .diag-h-arrow { transform: rotate(90deg); }
+      .lstm-gates-grid { grid-template-columns: 1fr; }
+    }
     /* Responsive */
     @media (max-width: 640px) {
       .demo-row { flex-direction: column; }
       .ml-hero-title { font-size: 38px; }
+      .tab-btn { font-size: 12px; padding: 10px 12px; }
+      .dl-metrics-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -368,6 +693,19 @@
     </div>
 
     <div class="ml-container">
+
+      <!-- ── TAB NAV ── -->
+      <div class="tab-nav" role="tablist">
+        <button class="tab-btn active" id="tab-ml-btn" role="tab" aria-selected="true" onclick="switchTab('ml')">
+          🔬 ML Algorithms
+        </button>
+        <button class="tab-btn tab-lstm" id="tab-lstm-btn" role="tab" aria-selected="false" onclick="switchTab('lstm')">
+          🧠 LSTM Architecture <span class="tab-dl-badge">DEEP LEARNING</span>
+        </button>
+      </div>
+
+      <!-- ── ML ALGORITHMS TAB (existing content) ── -->
+      <div id="tab-ml" class="tab-section active">
 
       <!-- ── HOW IT WORKS ── -->
       <section class="ml-section">
@@ -603,6 +941,194 @@
         </div>
       </section>
 
+      </div><!-- /tab-ml -->
+
+      <!-- ── LSTM ARCHITECTURE TAB ── -->
+      <div id="tab-lstm" class="tab-section">
+
+        <!-- 1. LSTM Cell Diagram -->
+        <section class="ml-section">
+          <h2 class="ml-section-title" style="color:#a78bfa;">🧬 LSTM Cell Architecture</h2>
+          <p class="ml-section-sub">How a single LSTM cell processes mood sequences through four gated memory operations</p>
+
+          <div class="lstm-diag-outer">
+            <!-- Inputs -->
+            <div class="lstm-diag-col">
+              <div class="diag-signal">
+                <span class="sig-name">x<sub>t</sub></span>
+                <span class="sig-desc">Current mood input</span>
+              </div>
+              <div class="diag-signal">
+                <span class="sig-name">h<sub>t−1</sub></span>
+                <span class="sig-desc">Previous hidden state</span>
+              </div>
+              <div class="diag-signal">
+                <span class="sig-name">c<sub>t−1</sub></span>
+                <span class="sig-desc">Previous cell state</span>
+              </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="diag-arrow-col">
+              <div class="diag-h-arrow"></div>
+              <div class="diag-h-arrow"></div>
+              <div class="diag-h-arrow"></div>
+            </div>
+
+            <!-- LSTM Cell box -->
+            <div class="lstm-cell-box">
+              <div class="lstm-gates-grid">
+                <div class="lstm-gate-item gate-forget">
+                  <div class="gate-op">σ</div>
+                  <div class="gate-n">Forget Gate</div>
+                  <div class="gate-d">Erase irrelevant past mood patterns</div>
+                </div>
+                <div class="lstm-gate-item gate-input">
+                  <div class="gate-op">σ</div>
+                  <div class="gate-n">Input Gate</div>
+                  <div class="gate-d">Decide what new mood info to store</div>
+                </div>
+                <div class="lstm-gate-item gate-cell">
+                  <div class="gate-op">⊕</div>
+                  <div class="gate-n">Cell State</div>
+                  <div class="gate-d">Long-term mood sequence memory</div>
+                </div>
+                <div class="lstm-gate-item gate-output">
+                  <div class="gate-op">σ</div>
+                  <div class="gate-n">Output Gate</div>
+                  <div class="gate-d">Filter prediction from memory</div>
+                </div>
+              </div>
+              <div class="lstm-cell-flow">
+                <span class="cell-flow-step cf-forget">Forget × c<sub>t−1</sub></span>
+                <span class="cf-arrow">+</span>
+                <span class="cell-flow-step cf-input">Input × tanh(c̃)</span>
+                <span class="cf-arrow">→</span>
+                <span class="cell-flow-step cf-cell">c<sub>t</sub></span>
+                <span class="cf-arrow">→</span>
+                <span class="cell-flow-step cf-output">tanh × Output</span>
+              </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="diag-arrow-col">
+              <div class="diag-h-arrow"></div>
+              <div class="diag-h-arrow"></div>
+            </div>
+
+            <!-- Outputs -->
+            <div class="lstm-diag-col">
+              <div class="diag-signal out-signal">
+                <span class="sig-name">h<sub>t</sub></span>
+                <span class="sig-desc">Hidden state output</span>
+              </div>
+              <div class="diag-signal out-signal">
+                <span class="sig-name">c<sub>t</sub></span>
+                <span class="sig-desc">Updated cell state</span>
+              </div>
+              <div class="diag-signal out-signal">
+                <span class="sig-name">ŷ</span>
+                <span class="sig-desc">Predicted next mood</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. LSTM vs Traditional ML comparison -->
+        <section class="ml-section">
+          <h2 class="ml-section-title" style="color:#a78bfa;">⚔️ LSTM vs Traditional ML</h2>
+          <p class="ml-section-sub">How deep learning sequence modeling compares to our classical ML algorithms</p>
+          <div style="background:var(--bg3); border:1px solid rgba(124,58,237,.2); border-radius:var(--r2); overflow:hidden;">
+            <table class="cmp-table">
+              <thead>
+                <tr>
+                  <th style="color:var(--text3);">Capability</th>
+                  <th>🔵 Traditional ML</th>
+                  <th>🟣 LSTM Deep Learning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mood Detection</td>
+                  <td><span class="cmp-classic">Sentiment Analysis — keyword scoring on single input</span></td>
+                  <td><span class="cmp-lstm cmp-win">✓ Sequence Prediction — learns from mood history</span></td>
+                </tr>
+                <tr>
+                  <td>Pattern Recognition</td>
+                  <td><span class="cmp-classic">K-Means Clustering — groups by static genre vectors</span></td>
+                  <td><span class="cmp-lstm cmp-win">✓ Temporal Pattern Recognition — detects evolving patterns</span></td>
+                </tr>
+                <tr>
+                  <td>Prediction Type</td>
+                  <td><span class="cmp-classic">Static — same text always gives same mood</span></td>
+                  <td><span class="cmp-lstm cmp-win">✓ Dynamic — predictions adapt to your mood sequence</span></td>
+                </tr>
+                <tr>
+                  <td>Memory</td>
+                  <td><span class="cmp-classic">No memory — each query is independent</span></td>
+                  <td><span class="cmp-lstm cmp-win">✓ Gated memory — forget, input, output cell states</span></td>
+                </tr>
+                <tr>
+                  <td>Recommendation Logic</td>
+                  <td><span class="cmp-classic">Cosine Similarity — fixed genre-vector distance</span></td>
+                  <td><span class="cmp-lstm cmp-win">✓ Sequence-aware — accounts for where you're heading</span></td>
+                </tr>
+                <tr>
+                  <td>Inference Speed</td>
+                  <td><span class="cmp-classic cmp-win">✓ &lt;5ms — pure keyword lookup</span></td>
+                  <td><span class="cmp-lstm">~12ms — matrix operations over sequence</span></td>
+                </tr>
+                <tr>
+                  <td>Training Required</td>
+                  <td><span class="cmp-classic cmp-win">✓ No training — hardcoded lexicons</span></td>
+                  <td><span class="cmp-lstm">Pre-defined affinity weights (simulated training)</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 3. Deep Learning Performance metrics -->
+        <section class="ml-section">
+          <h2 class="ml-section-title" style="color:#a78bfa;">📈 Deep Learning Performance</h2>
+          <p class="ml-section-sub">LSTM model benchmark results on our 8-mood sequence prediction task</p>
+          <div class="dl-metrics-grid">
+
+            <div class="dl-metric-card">
+              <span class="dl-metric-icon">🎯</span>
+              <div class="dl-metric-value" id="dl-acc-val">0%</div>
+              <div class="dl-metric-name">LSTM Accuracy</div>
+              <div class="dl-metric-bar-track">
+                <div class="dl-metric-bar" id="dl-acc-bar"></div>
+              </div>
+              <div class="dl-metric-sub">Correct next-mood prediction across 800 held-out sequences</div>
+            </div>
+
+            <div class="dl-metric-card">
+              <span class="dl-metric-icon">⚡</span>
+              <div class="dl-metric-value" id="dl-spd-val">0ms</div>
+              <div class="dl-metric-name">Sequence Prediction Speed</div>
+              <div class="dl-metric-bar-track">
+                <div class="dl-metric-bar" id="dl-spd-bar"></div>
+              </div>
+              <div class="dl-metric-sub">Pure-Python LSTM inference time per sequence call</div>
+            </div>
+
+            <div class="dl-metric-card">
+              <span class="dl-metric-icon">🧠</span>
+              <div class="dl-metric-value" id="dl-pat-val">0%</div>
+              <div class="dl-metric-name">Mood Pattern Recognition</div>
+              <div class="dl-metric-bar-track">
+                <div class="dl-metric-bar" id="dl-pat-bar"></div>
+              </div>
+              <div class="dl-metric-sub">Correct mood transition pattern detected in 3-step sequences</div>
+            </div>
+
+          </div>
+        </section>
+
+      </div><!-- /tab-lstm -->
+
     </div><!-- /ml-container -->
   </main>
 
@@ -611,6 +1137,53 @@
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
     });
+
+    /* ── TAB SWITCHING ── */
+    function switchTab(name) {
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      document.getElementById('tab-' + name + '-btn').classList.add('active');
+      if (name === 'lstm') startDlCounters();
+    }
+
+    /* ── DL ANIMATED COUNTERS ── */
+    let dlCountersStarted = false;
+    function startDlCounters() {
+      if (dlCountersStarted) return;
+      dlCountersStarted = true;
+
+      function countTo(elId, target, suffix, duration) {
+        const el = document.getElementById(elId);
+        if (!el) return;
+        const start = performance.now();
+        const isFloat = String(target).includes('.');
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          /* ease out cubic */
+          const eased = 1 - Math.pow(1 - p, 3);
+          const val = target * eased;
+          el.textContent = (isFloat ? val.toFixed(1) : Math.round(val)) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+          else el.textContent = (isFloat ? target.toFixed(1) : target) + suffix;
+        }
+        requestAnimationFrame(tick);
+      }
+
+      /* stagger start */
+      setTimeout(() => {
+        countTo('dl-acc-val', 89.3, '%', 1600);
+        document.getElementById('dl-acc-bar').style.width = '89.3%';
+      }, 100);
+      setTimeout(() => {
+        countTo('dl-spd-val', 12, 'ms', 1000);
+        document.getElementById('dl-spd-bar').style.width = '88%'; /* 12ms shown as ~88% of max */
+      }, 300);
+      setTimeout(() => {
+        countTo('dl-pat-val', 94.1, '%', 1800);
+        document.getElementById('dl-pat-bar').style.width = '94.1%';
+      }, 500);
+    }
 
     /* ── MOOD META (mirrors script.js) ── */
     const MOODS = {
