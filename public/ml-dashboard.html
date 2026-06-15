@@ -26,7 +26,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(139,92,246,.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(191,90,242,.18) 0%, transparent 70%);
       pointer-events: none;
     }
     .ml-hero-badge {
@@ -35,9 +35,9 @@
       gap: 8px;
       padding: 6px 16px;
       border-radius: 999px;
-      background: rgba(139,92,246,.15);
-      border: 1px solid rgba(139,92,246,.4);
-      color: #c4b5fd;
+      background: rgba(191,90,242,.15);
+      border: 1px solid rgba(191,90,242,.4);
+      color: #E8B4FF;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: .04em;
@@ -50,7 +50,7 @@
       line-height: 1.05;
       margin-bottom: 16px;
     }
-    .ml-hero-title .purple { color: #a78bfa; }
+    .ml-hero-title .purple { color: #D580FF; }
     .ml-hero-sub {
       font-size: 17px;
       color: var(--text2);
@@ -80,7 +80,7 @@
       transition: var(--ease);
       animation: fadeUp .5s ease both;
     }
-    .ml-card:hover { border-color: rgba(139,92,246,.4); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    .ml-card:hover { border-color: rgba(191,90,242,.4); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
     .ml-card:nth-child(2) { animation-delay: .1s; }
     .ml-card:nth-child(3) { animation-delay: .2s; }
     .ml-card-icon { font-size: 36px; margin-bottom: 12px; }
@@ -106,21 +106,21 @@
     }
     .pipe-arrow { color: var(--text3); font-size: 14px; }
     .pipe-step.highlight {
-      background: rgba(139,92,246,.2);
-      border-color: rgba(139,92,246,.5);
-      color: #c4b5fd;
+      background: rgba(191,90,242,.2);
+      border-color: rgba(191,90,242,.5);
+      color: #E8B4FF;
     }
     .pipe-example {
       margin-top: 14px;
       padding: 10px 14px;
       background: rgba(255,255,255,.03);
-      border-left: 3px solid #8b5cf6;
+      border-left: 3px solid #BF5AF2;
       border-radius: 0 8px 8px 0;
       font-size: 12px;
       color: var(--text2);
       font-style: italic;
     }
-    .pipe-example strong { color: #a78bfa; font-style: normal; }
+    .pipe-example strong { color: #D580FF; font-style: normal; }
 
     /* Genre vector matrix */
     .genre-matrix { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 4px; }
@@ -138,16 +138,16 @@
     }
     .genre-matrix tr td:first-child { text-align: left; color: var(--text2); font-weight: 500; }
     .cell-1 {
-      background: rgba(139,92,246,.35);
+      background: rgba(191,90,242,.35);
       border-radius: 4px;
-      color: #c4b5fd;
+      color: #E8B4FF;
       font-weight: 700;
       width: 24px; height: 20px;
       display: inline-flex; align-items: center; justify-content: center;
     }
     .cell-0 { color: var(--text3); }
     .cosine-row { margin-top: 10px; font-size: 11px; color: var(--text3); }
-    .cosine-row span { color: #a78bfa; font-weight: 700; }
+    .cosine-row span { color: #D580FF; font-weight: 700; }
 
     /* Scatter plot */
     .scatter-wrap { position: relative; margin-top: 4px; }
@@ -194,11 +194,11 @@
       font-size: 15px;
       transition: border-color .2s;
     }
-    .demo-input:focus { border-color: #8b5cf6; }
+    .demo-input:focus { border-color: #BF5AF2; }
     .demo-input::placeholder { color: var(--text3); }
     .demo-btn {
       padding: 13px 24px;
-      background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+      background: linear-gradient(135deg, #BF5AF2, #BF5AF2);
       color: #fff;
       border-radius: 10px;
       font-size: 14px;
@@ -207,7 +207,7 @@
       transition: var(--ease);
       white-space: nowrap;
     }
-    .demo-btn:hover { transform: scale(1.04); box-shadow: 0 0 20px rgba(139,92,246,.5); }
+    .demo-btn:hover { transform: scale(1.04); box-shadow: 0 0 20px rgba(191,90,242,.5); }
     .demo-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
     .demo-result {
@@ -221,8 +221,8 @@
       gap: 14px;
       margin-bottom: 18px;
       padding: 16px 20px;
-      background: rgba(139,92,246,.08);
-      border: 1px solid rgba(139,92,246,.3);
+      background: rgba(191,90,242,.08);
+      border: 1px solid rgba(191,90,242,.3);
       border-radius: 12px;
     }
     .result-mood-emoji { font-size: 36px; }
@@ -240,7 +240,7 @@
     .conf-fill {
       height: 100%;
       border-radius: 99px;
-      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      background: linear-gradient(90deg, #BF5AF2, #D580FF);
       transition: width .8s cubic-bezier(.4,0,.2,1);
     }
 
@@ -249,9 +249,9 @@
     .kw-chip {
       padding: 4px 12px;
       border-radius: 999px;
-      background: rgba(139,92,246,.15);
-      border: 1px solid rgba(139,92,246,.35);
-      color: #c4b5fd;
+      background: rgba(191,90,242,.15);
+      border: 1px solid rgba(191,90,242,.35);
+      color: #E8B4FF;
       font-size: 12px;
       font-weight: 600;
     }
@@ -324,8 +324,8 @@
       font-size: 11px;
       font-weight: 700;
     }
-    .tag-purple { background: rgba(139,92,246,.2); border: 1px solid rgba(139,92,246,.4); color: #c4b5fd; }
-    .tag-blue   { background: rgba(59,130,246,.2);  border: 1px solid rgba(59,130,246,.4);  color: #93c5fd; }
+    .tag-purple { background: rgba(191,90,242,.2); border: 1px solid rgba(191,90,242,.4); color: #E8B4FF; }
+    .tag-blue   { background: rgba(0,245,160,.2);  border: 1px solid rgba(0,245,160,.4);  color: #33FFB3; }
     .tag-green  { background: rgba(34,197,94,.2);   border: 1px solid rgba(34,197,94,.4);   color: #86efac; }
 
     /* ── TAB NAVIGATION ── */
@@ -356,15 +356,15 @@
       gap: 8px;
     }
     .tab-btn.active {
-      background: rgba(124,58,237,.15);
-      border-color: rgba(124,58,237,.45);
-      color: #c4b5fd;
-      box-shadow: 0 0 20px rgba(124,58,237,.12);
+      background: rgba(191,90,242,.15);
+      border-color: rgba(191,90,242,.45);
+      color: #E8B4FF;
+      box-shadow: 0 0 20px rgba(191,90,242,.12);
     }
     .tab-btn.active.tab-lstm {
-      background: rgba(124,58,237,.2);
-      border-color: rgba(124,58,237,.6);
-      box-shadow: 0 0 28px rgba(124,58,237,.2);
+      background: rgba(191,90,242,.2);
+      border-color: rgba(191,90,242,.6);
+      box-shadow: 0 0 28px rgba(191,90,242,.2);
     }
     .tab-btn:hover:not(.active) { color: var(--text2); background: rgba(255,255,255,.04); }
     .tab-section { display: none; }
@@ -372,9 +372,9 @@
     .tab-dl-badge {
       font-size: 9px; font-weight: 800; letter-spacing: 1px;
       padding: 2px 7px; border-radius: 10px;
-      background: rgba(124,58,237,.3);
-      border: 1px solid rgba(124,58,237,.5);
-      color: #a78bfa; text-transform: uppercase;
+      background: rgba(191,90,242,.3);
+      border: 1px solid rgba(191,90,242,.5);
+      color: #D580FF; text-transform: uppercase;
     }
 
     /* ── LSTM CELL DIAGRAM ── */
@@ -383,7 +383,7 @@
       align-items: center;
       gap: 0;
       background: rgba(255,255,255,.02);
-      border: 1px solid rgba(124,58,237,.2);
+      border: 1px solid rgba(191,90,242,.2);
       border-radius: 20px;
       padding: 32px 24px;
       overflow-x: auto;
@@ -401,8 +401,8 @@
       align-items: center;
       gap: 4px;
       padding: 10px 14px;
-      background: rgba(124,58,237,.1);
-      border: 1px solid rgba(124,58,237,.35);
+      background: rgba(191,90,242,.1);
+      border: 1px solid rgba(191,90,242,.35);
       border-radius: 10px;
       min-width: 86px;
       text-align: center;
@@ -410,14 +410,14 @@
     .diag-signal .sig-name {
       font-size: 17px; font-weight: 800;
       font-family: 'Bebas Neue', monospace;
-      color: #c4b5fd; letter-spacing: 1px;
+      color: #E8B4FF; letter-spacing: 1px;
     }
     .diag-signal .sig-desc {
       font-size: 10px; color: var(--text3);
       font-weight: 500; letter-spacing: .3px;
     }
-    .diag-signal.out-signal { border-color: rgba(245,158,11,.4); background: rgba(245,158,11,.08); }
-    .diag-signal.out-signal .sig-name { color: #fbbf24; }
+    .diag-signal.out-signal { border-color: rgba(255,107,107,.4); background: rgba(255,107,107,.08); }
+    .diag-signal.out-signal .sig-name { color: #FF8080; }
     .diag-arrow-col {
       display: flex;
       flex-direction: column;
@@ -429,22 +429,22 @@
     }
     .diag-h-arrow {
       width: 32px; height: 2px;
-      background: rgba(124,58,237,.5);
+      background: rgba(191,90,242,.5);
       position: relative;
     }
     .diag-h-arrow::after {
       content: '';
       position: absolute;
       right: -1px; top: -4px;
-      border-left: 8px solid rgba(124,58,237,.7);
+      border-left: 8px solid rgba(191,90,242,.7);
       border-top: 5px solid transparent;
       border-bottom: 5px solid transparent;
     }
     .lstm-cell-box {
       flex: 1;
       min-width: 320px;
-      background: linear-gradient(135deg, rgba(124,58,237,.07) 0%, rgba(6,182,212,.04) 100%);
-      border: 2px solid rgba(124,58,237,.35);
+      background: linear-gradient(135deg, rgba(191,90,242,.07) 0%, rgba(0,245,160,.04) 100%);
+      border: 2px solid rgba(191,90,242,.35);
       border-radius: 16px;
       padding: 20px;
       position: relative;
@@ -453,7 +453,7 @@
       content: 'LSTM CELL';
       position: absolute;
       top: -12px; left: 20px;
-      background: #7C3AED;
+      background: #BF5AF2;
       color: #fff;
       font-size: 10px; font-weight: 800;
       letter-spacing: 1.5px;
@@ -479,8 +479,8 @@
     .lstm-gate-item:hover { transform: scale(1.03); }
     .gate-forget { border-color: rgba(239,68,68,.4);  background: rgba(239,68,68,.06); }
     .gate-input  { border-color: rgba(34,197,94,.4);  background: rgba(34,197,94,.06); }
-    .gate-cell   { border-color: rgba(6,182,212,.4);  background: rgba(6,182,212,.06); }
-    .gate-output { border-color: rgba(245,158,11,.4); background: rgba(245,158,11,.06); }
+    .gate-cell   { border-color: rgba(0,245,160,.4);  background: rgba(0,245,160,.06); }
+    .gate-output { border-color: rgba(255,107,107,.4); background: rgba(255,107,107,.06); }
     .gate-op {
       font-size: 22px; font-weight: 800;
       line-height: 1;
@@ -488,8 +488,8 @@
     }
     .gate-forget .gate-op  { color: #f87171; }
     .gate-input  .gate-op  { color: #4ade80; }
-    .gate-cell   .gate-op  { color: #22d3ee; }
-    .gate-output .gate-op  { color: #fbbf24; }
+    .gate-cell   .gate-op  { color: #33FFB3; }
+    .gate-output .gate-op  { color: #FF8080; }
     .gate-n { font-size: 12px; font-weight: 700; color: var(--text1); }
     .gate-d { font-size: 10px; color: var(--text3); line-height: 1.4; }
     .lstm-cell-flow {
@@ -512,8 +512,8 @@
     }
     .cf-forget { background: rgba(239,68,68,.15); color: #f87171; }
     .cf-input  { background: rgba(34,197,94,.15);  color: #4ade80; }
-    .cf-cell   { background: rgba(6,182,212,.15);  color: #22d3ee; }
-    .cf-output { background: rgba(245,158,11,.15); color: #fbbf24; }
+    .cf-cell   { background: rgba(0,245,160,.15);  color: #33FFB3; }
+    .cf-output { background: rgba(255,107,107,.15); color: #FF8080; }
     .cf-arrow  { color: var(--text3); font-size: 13px; }
 
     /* ── COMPARISON TABLE ── */
@@ -523,7 +523,7 @@
       font-size: 13px;
     }
     .cmp-table thead tr {
-      background: rgba(124,58,237,.08);
+      background: rgba(191,90,242,.08);
     }
     .cmp-table th {
       padding: 14px 18px;
@@ -532,10 +532,10 @@
       font-size: 12px;
       letter-spacing: .5px;
       text-transform: uppercase;
-      border-bottom: 2px solid rgba(124,58,237,.25);
+      border-bottom: 2px solid rgba(191,90,242,.25);
     }
-    .cmp-table th:nth-child(2) { color: #93c5fd; }
-    .cmp-table th:nth-child(3) { color: #a78bfa; }
+    .cmp-table th:nth-child(2) { color: #33FFB3; }
+    .cmp-table th:nth-child(3) { color: #D580FF; }
     .cmp-table td {
       padding: 14px 18px;
       border-bottom: 1px solid rgba(255,255,255,.04);
@@ -548,16 +548,16 @@
     .cmp-classic {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 4px 10px;
-      background: rgba(59,130,246,.1);
-      border: 1px solid rgba(59,130,246,.25);
-      border-radius: 6px; font-size: 12px; font-weight: 500; color: #93c5fd;
+      background: rgba(0,245,160,.1);
+      border: 1px solid rgba(0,245,160,.25);
+      border-radius: 6px; font-size: 12px; font-weight: 500; color: #33FFB3;
     }
     .cmp-lstm {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 4px 10px;
-      background: rgba(124,58,237,.12);
-      border: 1px solid rgba(124,58,237,.3);
-      border-radius: 6px; font-size: 12px; font-weight: 500; color: #c4b5fd;
+      background: rgba(191,90,242,.12);
+      border: 1px solid rgba(191,90,242,.3);
+      border-radius: 6px; font-size: 12px; font-weight: 500; color: #E8B4FF;
     }
     .cmp-win { color: #4ade80; font-weight: 700; }
 
@@ -569,7 +569,7 @@
     }
     .dl-metric-card {
       background: var(--bg3);
-      border: 1px solid rgba(124,58,237,.2);
+      border: 1px solid rgba(191,90,242,.2);
       border-radius: 20px;
       padding: 28px;
       text-align: center;
@@ -580,14 +580,14 @@
     }
     .dl-metric-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 16px 48px rgba(124,58,237,.2);
-      border-color: rgba(124,58,237,.4);
+      box-shadow: 0 16px 48px rgba(191,90,242,.2);
+      border-color: rgba(191,90,242,.4);
     }
     .dl-metric-card::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,.1) 0%, transparent 60%);
+      background: radial-gradient(ellipse at 50% 0%, rgba(191,90,242,.1) 0%, transparent 60%);
       pointer-events: none;
     }
     .dl-metric-card:nth-child(2) { animation-delay: .1s; }
@@ -596,14 +596,14 @@
       font-size: 36px;
       margin-bottom: 12px;
       display: block;
-      filter: drop-shadow(0 0 10px rgba(124,58,237,.5));
+      filter: drop-shadow(0 0 10px rgba(191,90,242,.5));
     }
     .dl-metric-value {
       font-size: 44px;
       font-weight: 800;
       line-height: 1;
       margin-bottom: 6px;
-      background: linear-gradient(135deg, #c4b5fd, #7C3AED);
+      background: linear-gradient(135deg, #E8B4FF, #BF5AF2);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -611,11 +611,11 @@
       letter-spacing: 1px;
     }
     .dl-metric-card:nth-child(2) .dl-metric-value {
-      background: linear-gradient(135deg, #22d3ee, #06B6D4);
+      background: linear-gradient(135deg, #33FFB3, #00F5A0);
       -webkit-background-clip: text; background-clip: text;
     }
     .dl-metric-card:nth-child(3) .dl-metric-value {
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      background: linear-gradient(135deg, #FF8080, #FF6B6B);
       -webkit-background-clip: text; background-clip: text;
     }
     .dl-metric-name {
@@ -636,9 +636,9 @@
       width: 0;
       transition: width 1.6s cubic-bezier(.4,0,.2,1);
     }
-    .dl-metric-card:nth-child(1) .dl-metric-bar { background: linear-gradient(90deg,#7c3aed,#a78bfa); }
-    .dl-metric-card:nth-child(2) .dl-metric-bar { background: linear-gradient(90deg,#06B6D4,#22d3ee); }
-    .dl-metric-card:nth-child(3) .dl-metric-bar { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+    .dl-metric-card:nth-child(1) .dl-metric-bar { background: linear-gradient(90deg,#BF5AF2,#D580FF); }
+    .dl-metric-card:nth-child(2) .dl-metric-bar { background: linear-gradient(90deg,#00F5A0,#33FFB3); }
+    .dl-metric-card:nth-child(3) .dl-metric-bar { background: linear-gradient(90deg,#FF6B6B,#FF8080); }
     .dl-metric-sub {
       font-size: 11px; color: var(--text3);
       margin-top: 8px; line-height: 1.5;
@@ -791,13 +791,13 @@
                 <!-- cluster regions (soft blobs) -->
                 <ellipse cx="65"  cy="45"  rx="32" ry="22" fill="rgba(34,197,94,.08)"  stroke="rgba(34,197,94,.2)"  stroke-width="1"/>
                 <ellipse cx="195" cy="50"  rx="32" ry="22" fill="rgba(239,68,68,.08)"  stroke="rgba(239,68,68,.2)"  stroke-width="1"/>
-                <ellipse cx="70"  cy="115" rx="32" ry="18" fill="rgba(59,130,246,.08)" stroke="rgba(59,130,246,.2)" stroke-width="1"/>
-                <ellipse cx="190" cy="115" rx="30" ry="18" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+                <ellipse cx="70"  cy="115" rx="32" ry="18" fill="rgba(0,245,160,.08)" stroke="rgba(0,245,160,.2)" stroke-width="1"/>
+                <ellipse cx="190" cy="115" rx="30" ry="18" fill="rgba(255,107,107,.08)" stroke="rgba(255,107,107,.2)" stroke-width="1"/>
                 <!-- cluster label -->
                 <text x="65"  y="30"  text-anchor="middle" fill="rgba(34,197,94,.7)"  font-size="8" font-weight="600">Uplifting</text>
                 <text x="195" y="35"  text-anchor="middle" fill="rgba(239,68,68,.7)"  font-size="8" font-weight="600">Dark</text>
-                <text x="70"  y="104" text-anchor="middle" fill="rgba(59,130,246,.7)" font-size="8" font-weight="600">Adventure</text>
-                <text x="190" y="104" text-anchor="middle" fill="rgba(245,158,11,.7)" font-size="8" font-weight="600">Thoughtful</text>
+                <text x="70"  y="104" text-anchor="middle" fill="rgba(0,245,160,.7)" font-size="8" font-weight="600">Adventure</text>
+                <text x="190" y="104" text-anchor="middle" fill="rgba(255,107,107,.7)" font-size="8" font-weight="600">Thoughtful</text>
                 <!-- Uplifting dots -->
                 <circle cx="58"  cy="42" r="4.5" fill="#22c55e" opacity=".85"/>
                 <circle cx="74"  cy="38" r="4"   fill="#22c55e" opacity=".7"/>
@@ -809,31 +809,31 @@
                 <circle cx="182" cy="58" r="3.5" fill="#ef4444" opacity=".6"/>
                 <circle cx="200" cy="40" r="3"   fill="#ef4444" opacity=".75"/>
                 <!-- Adventure dots -->
-                <circle cx="65"  cy="112" r="4.5" fill="#3b82f6" opacity=".85"/>
-                <circle cx="80"  cy="120" r="4"   fill="#3b82f6" opacity=".7"/>
-                <circle cx="58"  cy="122" r="3.5" fill="#3b82f6" opacity=".6"/>
-                <circle cx="78"  cy="108" r="3"   fill="#3b82f6" opacity=".75"/>
+                <circle cx="65"  cy="112" r="4.5" fill="#00F5A0" opacity=".85"/>
+                <circle cx="80"  cy="120" r="4"   fill="#00F5A0" opacity=".7"/>
+                <circle cx="58"  cy="122" r="3.5" fill="#00F5A0" opacity=".6"/>
+                <circle cx="78"  cy="108" r="3"   fill="#00F5A0" opacity=".75"/>
                 <!-- Thoughtful dots -->
-                <circle cx="185" cy="112" r="4.5" fill="#f59e0b" opacity=".85"/>
-                <circle cx="200" cy="120" r="4"   fill="#f59e0b" opacity=".7"/>
-                <circle cx="178" cy="120" r="3.5" fill="#f59e0b" opacity=".6"/>
-                <circle cx="196" cy="106" r="3"   fill="#f59e0b" opacity=".75"/>
+                <circle cx="185" cy="112" r="4.5" fill="#FF6B6B" opacity=".85"/>
+                <circle cx="200" cy="120" r="4"   fill="#FF6B6B" opacity=".7"/>
+                <circle cx="178" cy="120" r="3.5" fill="#FF6B6B" opacity=".6"/>
+                <circle cx="196" cy="106" r="3"   fill="#FF6B6B" opacity=".75"/>
                 <!-- centroid crosses -->
                 <line x1="62"  y1="43" x2="68"  y2="43" stroke="#22c55e" stroke-width="2"/>
                 <line x1="65"  y1="40" x2="65"  y2="46" stroke="#22c55e" stroke-width="2"/>
                 <line x1="192" y1="49" x2="198" y2="49" stroke="#ef4444" stroke-width="2"/>
                 <line x1="195" y1="46" x2="195" y2="52" stroke="#ef4444" stroke-width="2"/>
-                <line x1="67"  y1="113" x2="73"  y2="113" stroke="#3b82f6" stroke-width="2"/>
-                <line x1="70"  y1="110" x2="70"  y2="116" stroke="#3b82f6" stroke-width="2"/>
-                <line x1="187" y1="113" x2="193" y2="113" stroke="#f59e0b" stroke-width="2"/>
-                <line x1="190" y1="110" x2="190" y2="116" stroke="#f59e0b" stroke-width="2"/>
+                <line x1="67"  y1="113" x2="73"  y2="113" stroke="#00F5A0" stroke-width="2"/>
+                <line x1="70"  y1="110" x2="70"  y2="116" stroke="#00F5A0" stroke-width="2"/>
+                <line x1="187" y1="113" x2="193" y2="113" stroke="#FF6B6B" stroke-width="2"/>
+                <line x1="190" y1="110" x2="190" y2="116" stroke="#FF6B6B" stroke-width="2"/>
               </svg>
             </div>
             <div class="scatter-legend">
               <div class="legend-dot"><span style="background:#22c55e"></span>Uplifting</div>
               <div class="legend-dot"><span style="background:#ef4444"></span>Dark</div>
-              <div class="legend-dot"><span style="background:#3b82f6"></span>Adventure</div>
-              <div class="legend-dot"><span style="background:#f59e0b"></span>Thoughtful</div>
+              <div class="legend-dot"><span style="background:#00F5A0"></span>Adventure</div>
+              <div class="legend-dot"><span style="background:#FF6B6B"></span>Thoughtful</div>
             </div>
           </div>
 
@@ -869,7 +869,7 @@
               <span class="metric-name">Sentiment Accuracy</span>
               <span class="metric-pct">87%</span>
             </div>
-            <div class="metric-track"><div class="metric-fill" data-pct="87" style="background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+            <div class="metric-track"><div class="metric-fill" data-pct="87" style="background:linear-gradient(90deg,#BF5AF2,#D580FF)"></div></div>
             <div class="metric-sub">Correct mood detected out of 1,200 test queries</div>
           </div>
           <div class="metric-card">
@@ -877,7 +877,7 @@
               <span class="metric-name">Recommendation Precision</span>
               <span class="metric-pct">79%</span>
             </div>
-            <div class="metric-track"><div class="metric-fill" data-pct="79" style="background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div>
+            <div class="metric-track"><div class="metric-fill" data-pct="79" style="background:linear-gradient(90deg,#00B87A,#00F5A0)"></div></div>
             <div class="metric-sub">Top-5 recommendations rated relevant by users</div>
           </div>
           <div class="metric-card">
@@ -893,7 +893,7 @@
               <span class="metric-name">Avg. Response Time</span>
               <span class="metric-pct">&lt;30ms</span>
             </div>
-            <div class="metric-track"><div class="metric-fill" data-pct="96" style="background:linear-gradient(90deg,#92400e,#f59e0b)"></div></div>
+            <div class="metric-track"><div class="metric-fill" data-pct="96" style="background:linear-gradient(90deg,#92400e,#FF6B6B)"></div></div>
             <div class="metric-sub">Pure-JS inference — no network call to an ML service</div>
           </div>
         </div>
@@ -948,7 +948,7 @@
 
         <!-- 1. LSTM Cell Diagram -->
         <section class="ml-section">
-          <h2 class="ml-section-title" style="color:#a78bfa;">🧬 LSTM Cell Architecture</h2>
+          <h2 class="ml-section-title" style="color:#D580FF;">🧬 LSTM Cell Architecture</h2>
           <p class="ml-section-sub">How a single LSTM cell processes mood sequences through four gated memory operations</p>
 
           <div class="lstm-diag-outer">
@@ -1036,9 +1036,9 @@
 
         <!-- 2. LSTM vs Traditional ML comparison -->
         <section class="ml-section">
-          <h2 class="ml-section-title" style="color:#a78bfa;">⚔️ LSTM vs Traditional ML</h2>
+          <h2 class="ml-section-title" style="color:#D580FF;">⚔️ LSTM vs Traditional ML</h2>
           <p class="ml-section-sub">How deep learning sequence modeling compares to our classical ML algorithms</p>
-          <div style="background:var(--bg3); border:1px solid rgba(124,58,237,.2); border-radius:var(--r2); overflow:hidden;">
+          <div style="background:var(--bg3); border:1px solid rgba(191,90,242,.2); border-radius:var(--r2); overflow:hidden;">
             <table class="cmp-table">
               <thead>
                 <tr>
@@ -1090,7 +1090,7 @@
 
         <!-- 3. Deep Learning Performance metrics -->
         <section class="ml-section">
-          <h2 class="ml-section-title" style="color:#a78bfa;">📈 Deep Learning Performance</h2>
+          <h2 class="ml-section-title" style="color:#D580FF;">📈 Deep Learning Performance</h2>
           <p class="ml-section-sub">LSTM model benchmark results on our 8-mood sequence prediction task</p>
           <div class="dl-metrics-grid">
 

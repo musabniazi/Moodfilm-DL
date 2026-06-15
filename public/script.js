@@ -17,13 +17,13 @@ const TMDB_IMG_LG = 'https://image.tmdb.org/t/p/w1280';
    10770=TV Movie, 53=Thriller, 10752=War, 37=Western
 */
 const MOODS = [
-  { id:'happy',     label:'Happy',     emoji:'😄', color:'#F59E0B', desc:'Feel-good & uplifting',  genres:[35,10751,16],    sort:'popularity.desc' },
+  { id:'happy',     label:'Happy',     emoji:'😄', color:'#FF6B6B', desc:'Feel-good & uplifting',  genres:[35,10751,16],    sort:'popularity.desc' },
   { id:'sad',       label:'Sad',       emoji:'😢', color:'#6366F1', desc:'Emotional & moving',     genres:[18],             sort:'vote_average.desc' },
   { id:'romantic',  label:'Romantic',  emoji:'❤️', color:'#EC4899', desc:'Love & passion',         genres:[10749,18],       sort:'popularity.desc' },
-  { id:'thriller',  label:'Thriller',  emoji:'🔍', color:'#0EA5E9', desc:'Mystery & suspense',     genres:[53,9648,80],     sort:'popularity.desc' },
+  { id:'thriller',  label:'Thriller',  emoji:'🔍', color:'#00F5A0', desc:'Mystery & suspense',     genres:[53,9648,80],     sort:'popularity.desc' },
   { id:'scifi',     label:'Sci-Fi',    emoji:'🤖', color:'#10B981', desc:'Sci-fi & innovation',    genres:[878,14,12],      sort:'popularity.desc' },
   { id:'action',    label:'Action',    emoji:'⚔️', color:'#EF4444', desc:'Intense & adrenaline',   genres:[28,12],          sort:'popularity.desc' },
-  { id:'horror',    label:'Horror',    emoji:'👻', color:'#7C3AED', desc:'Scary & suspenseful',    genres:[27,53],          sort:'popularity.desc' },
+  { id:'horror',    label:'Horror',    emoji:'👻', color:'#BF5AF2', desc:'Scary & suspenseful',    genres:[27,53],          sort:'popularity.desc' },
   { id:'animation', label:'Animation', emoji:'🎨', color:'#F97316', desc:'Fun for all ages',       genres:[16,10751,35],    sort:'popularity.desc' },
 ];
 
@@ -49,7 +49,7 @@ async function fetchMoviesForMood(moodId) {
   }
 }
 
-const CONFETTI_COLORS = ['#e50914','#f5c518','#3b82f6','#10b981','#f97316','#ec4899','#8b5cf6'];
+const CONFETTI_COLORS = ['#e50914','#FF6B6B','#00F5A0','#10b981','#f97316','#ec4899','#BF5AF2'];
 
 let state = {
   selectedMood:  null,   /* current mood id */
@@ -204,7 +204,7 @@ async function runMlLab() {
     (keywords_found?.slice(0, 8) ?? []).forEach(kw => {
       const tag = document.createElement('span');
       tag.textContent = kw;
-      tag.style.cssText = 'padding:4px 12px; background:rgba(124,58,237,0.2); color:#A78BFA; border-radius:20px; font-size:12px; font-weight:600;';
+      tag.style.cssText = 'padding:4px 12px; background:rgba(191,90,242,0.2); color:#D580FF; border-radius:20px; font-size:12px; font-weight:600;';
       kwEl.appendChild(tag);
     });
   }
@@ -324,14 +324,14 @@ function renderHeroParticles() {
    LSTM MOOD PREDICTOR
 ══════════════════════════════════════════════════════════ */
 const LSTM_MOOD_META = {
-  happy:     { emoji: '😄', color: '#F59E0B' },
+  happy:     { emoji: '😄', color: '#FF6B6B' },
   sad:       { emoji: '😢', color: '#6366F1' },
   excited:   { emoji: '🎉', color: '#10B981' },
   anxious:   { emoji: '😰', color: '#EF4444' },
   romantic:  { emoji: '❤️', color: '#EC4899' },
   angry:     { emoji: '😠', color: '#DC2626' },
   bored:     { emoji: '😑', color: '#6B7280' },
-  nostalgic: { emoji: '🌅', color: '#8B5CF6' },
+  nostalgic: { emoji: '🌅', color: '#BF5AF2' },
 };
 
 let lstmMoodHistory = [];
@@ -417,7 +417,7 @@ async function runLstmPredict() {
 
 function renderLstmResult(predicted, confidence, steps) {
   const pct  = Math.round((confidence || 0) * 100);
-  const meta = LSTM_MOOD_META[predicted] || { emoji: '🎭', color: '#7C3AED' };
+  const meta = LSTM_MOOD_META[predicted] || { emoji: '🎭', color: '#BF5AF2' };
 
   /* ── Sequence timeline ── */
   const timeline = document.getElementById('lstm-timeline');
@@ -425,7 +425,7 @@ function renderLstmResult(predicted, confidence, steps) {
     const allMoods = [...lstmMoodHistory, predicted];
     timeline.innerHTML = allMoods.map((m, i) => {
       const isPredicted = i === allMoods.length - 1;
-      const info = LSTM_MOOD_META[m] || { emoji: '🎭', color: '#7C3AED' };
+      const info = LSTM_MOOD_META[m] || { emoji: '🎭', color: '#BF5AF2' };
       return `
         <div class="lstm-tl-item ${isPredicted ? 'lstm-tl-predicted' : ''}" style="animation-delay:${i * 0.12}s">
           <div class="lstm-tl-dot" style="background:${info.color}; ${isPredicted ? `box-shadow:0 0 12px ${info.color}` : ''}"></div>
@@ -453,7 +453,7 @@ function renderLstmResult(predicted, confidence, steps) {
     const bar = document.getElementById('lstm-conf-bar');
     if (bar) {
       bar.style.width      = `${pct}%`;
-      bar.style.background = `linear-gradient(90deg, #7C3AED, ${meta.color})`;
+      bar.style.background = `linear-gradient(90deg, #BF5AF2, ${meta.color})`;
     }
   }, 100);
 
@@ -477,7 +477,7 @@ function renderLstmResult(predicted, confidence, steps) {
               <span>I</span>
             </div>
             <div class="lstm-gate-bar" title="Output gate: ${(s.output_gate_avg*100).toFixed(0)}%">
-              <div style="width:${s.output_gate_avg*100}%; background:#F59E0B"></div>
+              <div style="width:${s.output_gate_avg*100}%; background:#FF6B6B"></div>
               <span>O</span>
             </div>
           </div>
@@ -733,9 +733,9 @@ function buildMatchBadge(score) {
   if (score == null || (!state.selectedMood && !state.detectedMood)) return '';
   const s = Math.max(0, Math.min(100, score));
   let color, label, cls;
-  if (s >= 80) { color = '#22c55e'; label = '🎯 Perfect Match'; cls = 'match-perfect'; }
-  else if (s >= 60) { color = '#f59e0b'; label = '👍 Good Match'; cls = 'match-good'; }
-  else              { color = '#6b7280'; label = '🔍 Explore';    cls = ''; }
+  if (s >= 80) { color = '#00F5A0'; label = '🎯 Perfect Match'; cls = 'match-perfect'; }
+  else if (s >= 60) { color = '#FF6B6B'; label = '👍 Good Match'; cls = 'match-good'; }
+  else              { color = '#BF5AF2'; label = '🔍 Explore';    cls = ''; }
   return `
     <div class="ml-score-bar ${cls}" title="ML match score: ${s}%">
       <div class="ml-score-meta">
