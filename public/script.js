@@ -730,21 +730,31 @@ function appendGrid(movies, gridId) {
 }
 
 function buildMatchBadge(score) {
-  /* Only show when there is an active mood context */
   if (score == null || (!state.selectedMood && !state.detectedMood)) return '';
   const s = Math.max(0, Math.min(100, score));
-  let color, label;
-  if (s >= 80) { color = '#22c55e'; label = '🎯 Perfect Match'; }
-  else if (s >= 60) { color = '#f59e0b'; label = '👍 Good Match'; }
-  else              { color = '#6b7280'; label = '🔍 Explore'; }
+  let color, label, cls;
+  if (s >= 80) { color = '#22c55e'; label = '🎯 Perfect Match'; cls = 'match-perfect'; }
+  else if (s >= 60) { color = '#f59e0b'; label = '👍 Good Match'; cls = 'match-good'; }
+  else              { color = '#6b7280'; label = '🔍 Explore';    cls = ''; }
   return `
-    <div class="ml-score-bar" title="ML match score: ${s}%">
-      <div class="ml-score-fill" style="width:${s}%;background:${color};"></div>
+    <div class="ml-score-bar ${cls}" title="ML match score: ${s}%">
       <div class="ml-score-meta">
         <span class="ml-score-label">${label}</span>
-        <span class="ml-label">ML</span>
+        <span class="ml-label">ML ${s}%</span>
+      </div>
+      <div class="ml-score-track">
+        <div class="ml-score-fill" style="width:${s}%; background:${color};"></div>
       </div>
     </div>`;
+}
+
+function closeDlBanner() {
+  const b = document.getElementById('dl-banner');
+  if (b) b.style.display = 'none';
+  document.body.classList.remove('banner-open');
+  document.body.classList.add('banner-closed');
+  const nav = document.getElementById('navbar');
+  if (nav) nav.style.top = '0';
 }
 
 function buildCard(movie, index) {

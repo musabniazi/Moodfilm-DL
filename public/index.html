@@ -16,7 +16,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="banner-open">
+
+  <!-- DL BANNER -->
+  <div id="dl-banner">
+    <span class="dl-banner-badge">New</span>
+    ✨ Now Powered by LSTM Deep Learning — Sequence-aware mood prediction
+    <button class="dl-banner-close" onclick="closeDlBanner()" aria-label="Close">×</button>
+  </div>
 
   <!-- NAVBAR -->
   <nav id="navbar">
@@ -46,6 +53,9 @@
 
   <!-- HERO -->
   <section id="hero">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
     <div id="hero-particles"></div>
     <div class="hero-content">
       <div class="hero-badge">🧠 Powered by Machine Learning</div>
@@ -83,16 +93,38 @@
         </button>
       </div>
 
-      <!-- LOADING PANEL -->
+      <!-- LOADING PANEL — Neural Network Animation -->
       <div id="ml-loading" style="display:none; padding:48px 24px;">
-        <div style="font-size:64px; animation:brainPulse 1s ease-in-out infinite; display:block; margin-bottom:24px;">🧠</div>
-        <div style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
-          <span class="ldot"></span>
-          <span class="ldot" style="animation-delay:0.2s"></span>
-          <span class="ldot" style="animation-delay:0.4s"></span>
+        <div class="nn-wrap">
+          <svg class="nn-svg" viewBox="0 0 260 120" xmlns="http://www.w3.org/2000/svg">
+            <!-- Input→Hidden lines -->
+            <line class="nn-line active" x1="36" y1="30"  x2="120" y2="18"/>
+            <line class="nn-line active" x1="36" y1="30"  x2="120" y2="50"/>
+            <line class="nn-line active" x1="36" y1="30"  x2="120" y2="82"/>
+            <line class="nn-line active" x1="36" y1="90"  x2="120" y2="18"/>
+            <line class="nn-line active" x1="36" y1="90"  x2="120" y2="50"/>
+            <line class="nn-line active" x1="36" y1="90"  x2="120" y2="82"/>
+            <!-- Hidden→Output lines -->
+            <line class="nn-line active" x1="124" y1="18" x2="220" y2="60"/>
+            <line class="nn-line active" x1="124" y1="50" x2="220" y2="60"/>
+            <line class="nn-line active" x1="124" y1="82" x2="220" y2="60"/>
+            <!-- Extra hidden→hidden skip connections -->
+            <line class="nn-line active" x1="36"  y1="30" x2="220" y2="60"/>
+            <line class="nn-line active" x1="36"  y1="90" x2="120" y2="82"/>
+            <line class="nn-line active" x1="124" y1="18" x2="124" y2="82"/>
+            <!-- Input nodes -->
+            <circle class="nn-node-el" cx="36" cy="30" r="7"/>
+            <circle class="nn-node-el" cx="36" cy="90" r="7"/>
+            <!-- Hidden nodes -->
+            <circle class="nn-node-el" cx="124" cy="18" r="6"/>
+            <circle class="nn-node-el" cx="124" cy="50" r="6"/>
+            <circle class="nn-node-el" cx="124" cy="82" r="6"/>
+            <!-- Output node -->
+            <circle class="nn-node-el out-node" cx="220" cy="60" r="9"/>
+          </svg>
+          <p style="font-size:16px; font-weight:700; color:var(--text); letter-spacing:.3px;">Analyzing your mood…</p>
+          <p style="font-size:12px; color:var(--text3); letter-spacing:.5px;">NLP · Sentiment · Neural Inference</p>
         </div>
-        <p style="font-size:18px; font-weight:600; color:var(--text); margin-bottom:8px;">Analyzing your mood...</p>
-        <p style="font-size:13px; color:var(--text3);">NLP processing · Sentiment scoring · Matching movies</p>
       </div>
 
       <!-- RESULT PANEL -->
@@ -110,6 +142,56 @@
         </button>
       </div>
 
+    </div>
+  </section>
+
+  <!-- MOOD PICKER -->
+  <section id="mood-picker">
+    <div class="section-inner" style="text-align:center;">
+      <h2 class="section-title">Pick Your <span class="gradient-text">Mood</span></h2>
+      <p class="section-subtitle">Or describe it in the ML Lab above — your choice auto-fills the LSTM sequence</p>
+      <div class="mood-picker-grid">
+        <button class="mood-btn" style="--mb-color:rgba(245,158,11,.6);--mc:rgba(245,158,11,.55);" onclick="pickMood('happy')">
+          <span class="mood-btn-emoji">😊</span>
+          <span class="mood-btn-label">Happy</span>
+          <span class="mood-btn-desc">Feel-good &amp; uplifting</span>
+        </button>
+        <button class="mood-btn" style="--mb-color:rgba(99,102,241,.6);--mc:rgba(99,102,241,.55);" onclick="pickMood('sad')">
+          <span class="mood-btn-emoji">😢</span>
+          <span class="mood-btn-label">Sad</span>
+          <span class="mood-btn-desc">Emotional &amp; moving</span>
+        </button>
+        <button class="mood-btn" style="--mb-color:rgba(16,185,129,.6);--mc:rgba(16,185,129,.55);" onclick="pickMood('scifi')">
+          <span class="mood-btn-emoji">⚡</span>
+          <span class="mood-btn-label">Excited</span>
+          <span class="mood-btn-desc">Sci-fi &amp; adventure</span>
+        </button>
+        <button class="mood-btn" style="--mb-color:rgba(239,68,68,.6);--mc:rgba(239,68,68,.55);" onclick="pickMood('thriller')">
+          <span class="mood-btn-emoji">😰</span>
+          <span class="mood-btn-label">Anxious</span>
+          <span class="mood-btn-desc">Thriller &amp; suspense</span>
+        </button>
+        <button class="mood-btn" style="--mb-color:rgba(236,72,153,.6);--mc:rgba(236,72,153,.55);" onclick="pickMood('romantic')">
+          <span class="mood-btn-emoji">💕</span>
+          <span class="mood-btn-label">Romantic</span>
+          <span class="mood-btn-desc">Love &amp; passion</span>
+        </button>
+        <button class="mood-btn" style="--mb-color:rgba(220,38,38,.6);--mc:rgba(220,38,38,.55);" onclick="pickMood('action')">
+          <span class="mood-btn-emoji">😤</span>
+          <span class="mood-btn-label">Angry</span>
+          <span class="mood-btn-desc">Intense &amp; adrenaline</span>
+        </button>
+        <button class="mood-btn" style="--mb-color:rgba(107,114,128,.6);--mc:rgba(107,114,128,.55);" onclick="pickMood('animation')">
+          <span class="mood-btn-emoji">😴</span>
+          <span class="mood-btn-label">Bored</span>
+          <span class="mood-btn-desc">Fun &amp; lighthearted</span>
+        </button>
+        <button class="mood-btn" style="--mb-color:rgba(139,92,246,.6);--mc:rgba(139,92,246,.55);" onclick="pickMood('horror')">
+          <span class="mood-btn-emoji">🎞️</span>
+          <span class="mood-btn-label">Nostalgic</span>
+          <span class="mood-btn-desc">Classics &amp; mystery</span>
+        </button>
+      </div>
     </div>
   </section>
 
